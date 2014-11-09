@@ -1,6 +1,12 @@
 package view;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.BlockingQueue;
+
 import javax.swing.JPanel;
 
+import wiadomosc.Wiadomosc;
+import wiadomosc.WiadomoscTryb;
 import model.Wspolrzedne;
 
 /**
@@ -9,13 +15,16 @@ import model.Wspolrzedne;
  */
 public class View
 {
-	public View(int iloscWierszy, int iloscKolumn)
+	public View(int iloscWierszy, int iloscKolumn, BlockingQueue<Wiadomosc> kolejkaZadan)
 	{
 		// TODO
+		this.kolejkaZdarzen = kolejkaZadan;
 		okno = new Okno(iloscWierszy, iloscKolumn);
 		//nie tworzyc panelu gry, na poczatku ma byc nullem.
 		//stworzPanelWyboruGraczy();
 		//stworzPanelWyboruAlgorytmuAi();
+		
+		dodajListenery();
 	}
 	
 	/** Metoda wyœwietlaj¹ca ¿eton rodzaju zale¿nego od ktoryGracz na planszy wskazanych wspó³rzêdnych.*/
@@ -52,12 +61,27 @@ public class View
 	/** Metoda wyœwietlaj¹ca panel wyboru graczy.*/
 	public void wyswietlPanelWyboruGraczy()
 	{
+		okno.wyswietlPanelWyboruTrybu();
 		// TODO
 	}
 	
 	/** Metoda wyœwietlaj¹ca panel wyboru heurystyki dla AI.*/
 	public void wyswietlPanelWyboruAlgorytmuAI()
 	{
+		okno.wyswietlPanelWyboruAlgorytmu();
+		// TODO
+	}
+	/** Metoda wyœwietlaj¹ca panel wyboru graczy.*/
+	public void wylaczPanelWyboruGraczy()
+	{
+		okno.wylaczPanelWyboruTrybu();
+		// TODO
+	}
+	
+	/** Metoda wyœwietlaj¹ca panel wyboru heurystyki dla AI.*/
+	public void wylaczPanelWyboruAlgorytmuAI()
+	{
+		okno.wylaczPanelWyboruAlgorytmu();
 		// TODO
 	}
 	
@@ -79,5 +103,52 @@ public class View
 		// TODO
 	}
 	
+	/**
+	 * Metoda dodajaca listenery dla nacisniec przyciskow OK w panelach wyboru:
+	 * - trybu gry
+	 * - algorytmu AI
+	 */
+	private void dodajListenery(){
+		
+		wybranoTrybGryListener = new ActionListener (){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					
+				kolejkaZdarzen.offer(new WiadomoscTryb(okno.czytajTrybGry()));
+			
+		
+			}
+			
+			
+		};
+		wybranoAlgorytmAiListener = new ActionListener (){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				// TODO 
+				
+				
+			
+				
+				
+			}
+		
+			
+			
+			
+		};
+			
+		okno.dodajWyborTrybuListener(wybranoTrybGryListener);
+		okno.dodajWyborAlgorytmuAiListener(wybranoAlgorytmAiListener);
+		
+		
+	}
+	
 	private Okno okno;
+	BlockingQueue<Wiadomosc> kolejkaZdarzen;
+	
+	private ActionListener wybranoTrybGryListener;
+	private ActionListener wybranoAlgorytmAiListener;
 }

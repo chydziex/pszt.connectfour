@@ -1,4 +1,4 @@
-package view;
+package wiadomosc;
 
 public class WiadomoscNowaGra extends Wiadomosc
 {

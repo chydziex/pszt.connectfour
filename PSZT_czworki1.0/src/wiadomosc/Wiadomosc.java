@@ -1,4 +1,4 @@
-package view;
+package wiadomosc;
 import model.Tryby;
 
 public abstract class Wiadomosc

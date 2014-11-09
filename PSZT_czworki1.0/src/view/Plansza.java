@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
@@ -75,6 +76,7 @@ class Plansza extends JPanel
 		obrazkiZetonow[0] = new Ikona(new String("zeton1.bmp"));
 		obrazkiZetonow[1] = new Ikona(new String("zeton2.bmp"));
 	}
+	
 	
 	static final Ikona obrazekPustePole = new Ikona(new String("pustePole.bmp"));
 	static final Ikona[] obrazkiZetonow = new Ikona[2];

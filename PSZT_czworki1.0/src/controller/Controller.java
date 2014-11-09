@@ -3,14 +3,14 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import view.View;
-import view.Wiadomosc;
-import view.WiadomoscRuch;
+import wiadomosc.Wiadomosc;
+import wiadomosc.WiadomoscRuch;
 import model.Model;
 import model.RodzajeGraczy;
 import sytuacjeWyjatkowe.*;
 import model.Tryby;
 import model.Wspolrzedne;
-
+import wiadomosc.*;
 
 /** W modelu potrzebne:
  * metody interfejsu, które widaæ w run Controllera
@@ -22,13 +22,35 @@ public class Controller implements Runnable
 {
 	public Controller()
 	{
-		view = new View(model.iloscWierszy, model.iloscKolumn);
+		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
+		/**
 		view.wyswietlPanelZGra();
 		view.aktualizacja(new Wspolrzedne(5, 0), 0);
 		view.aktualizacja(new Wspolrzedne(5, 1), 1);
 		view.aktualizacja(new Wspolrzedne(4, 0), 0);
 		view.aktualizacja(new Wspolrzedne(3, 0), 1);
+		
+		*/
+		/**
+		 * testowanko wywietlania okna wyboru trybu, bez wyswietlania planszy
+		 * TODO
+		 * wyglad okna koniecznie - pobawie siê jutro - Mateusz Ch
+		 * 
+		 */
+		view.wyswietlPanelWyboruGraczy();
+		try {
+			odbierzWiadomosc();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+					
+		model.nowaGra(( (WiadomoscTryb) wiadomosc).jakiTryb());
+		
+		System.out.println(model.getTrybGry());
+		view.wylaczPanelWyboruGraczy();
 	}
+	
 	
 	@Override
 	public void run()
@@ -106,6 +128,10 @@ public class Controller implements Runnable
 		} catch(InterruptedException e)
 		{}
 		*/
+		
+		
+		
+		
 	}
 
 	private void ustawieniaGry() throws InterruptedException
@@ -143,7 +169,7 @@ public class Controller implements Runnable
 	 * @throws InterruptedException */
 	private void odbierzWiadomosc() throws InterruptedException
 	{
-		kolejkaZadan.take();
+		wiadomosc = kolejkaZadan.take();
 	}
 	
 	/** Metoda obs³uguj¹ca inne zadania umieszczone do kolejki - nowa gra lub jakiœ b³¹d, np kilkukrotnego wyboru kolumny przez tego samego gracza

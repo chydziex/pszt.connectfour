@@ -98,6 +98,7 @@ public class Controller implements Runnable
 						else
 						{
 							view.wyswietlPanelInterfejsuGracza(ktoryGracz);
+							wlozWiadomosc(new WiadomoscRuchMyszki(ostatnieXMyszki));
 							for(;;)
 							{
 								try
@@ -107,7 +108,12 @@ public class Controller implements Runnable
 									{
 										//System.out.println("Ruch myszki");
 										xMyszki = ((WiadomoscRuchMyszki)wiadomosc).getXMyszki();
+										ostatnieXMyszki = xMyszki;
 										view.aktualizacjaPaneluIntergejsuGracza(xMyszki);
+										if(model.czyRuchJestDozwolony(view.ktoraKolumneWskazujeGracz()))
+											view.ustawRodzajStrzalki(0);
+										else
+											view.ustawRodzajStrzalki(1);
 									}
 									else if(wiadomosc.czyRuch())
 									{
@@ -193,6 +199,11 @@ public class Controller implements Runnable
 		wiadomosc = kolejkaZadan.take();
 	}
 	
+	private void wlozWiadomosc(Wiadomosc wiadomosc)
+	{
+		kolejkaZadan.offer(wiadomosc);
+	}
+	
 	/** Metoda obs³uguj¹ca inne zadania umieszczone do kolejki - nowa gra lub jakiœ b³¹d, np kilkukrotnego wyboru kolumny przez tego samego gracza
 	 * zanim view wy³¹czy³ panel interfejsu wyboru kolumny. Zapisuje wiadomoœci do pola wiadomosc bez ich obs³ugi.*/
 	private void sprzatnijKolejke()
@@ -230,6 +241,8 @@ public class Controller implements Runnable
 	
 	/** Referencja na widok. */
 	private final View view;
+
+	private int ostatnieXMyszki = 150;
 	
 	/** Sk³adowa przechowuj¹ca referencje na wiadomoœci przekazywane przez BlockingQueue od View. */
 	private Wiadomosc wiadomosc = null;

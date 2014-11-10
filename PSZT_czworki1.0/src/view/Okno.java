@@ -140,6 +140,11 @@ class Okno extends JFrame {
 		odswiez();
 	}
 	
+	public void ustawRodzajStrzalki(int ktoraStrzalka)
+	{
+		panelInterfejsuGracza.ustawRodzajStrzalki(ktoraStrzalka);
+	}
+	
 	public void aktualizujPanelInterfejsuGracza(int xMyszki)
 	{
 		//TODO

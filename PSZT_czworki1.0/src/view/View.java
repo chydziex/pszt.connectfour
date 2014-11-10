@@ -44,6 +44,11 @@ public class View
 		okno.aktualizujPanelInterfejsuGracza(xMyszki);
 	}
 	
+	public void ustawRodzajStrzalki(int ktoraStrzalka)
+	{
+		okno.ustawRodzajStrzalki(ktoraStrzalka);
+	}
+	
 	/** Metoda tworz¹ca now¹ grê - czyst¹ planszê.*/
 	public void nowaGra()
 	{
@@ -97,6 +102,11 @@ public class View
 		// TODO
 	}
 	
+	public int ktoraKolumneWskazujeGracz()
+	{
+		return okno.ktoraKolumneWskazujeGracz();
+	}
+	
 	/** Metoda wyœwietlaj¹ca informacje o koñcu gry i remisie.*/
 	public void remis()
 	{
@@ -128,7 +138,7 @@ public class View
 			public void actionPerformed(ActionEvent e) {
 					
 				kolejkaZdarzen.offer(new WiadomoscTryb(okno.czytajTrybGry()));
-			
+				
 		
 			}
 			

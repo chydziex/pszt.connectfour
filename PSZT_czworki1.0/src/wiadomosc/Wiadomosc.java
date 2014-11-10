@@ -23,10 +23,19 @@ public abstract class Wiadomosc
 		return ruch;
 	}
 	
+	public boolean czyRuchMyszki()
+	{
+		return ruchMyszki;
+	}
+	
+
+	
 	/** Czy to wiadomoœæ informuj¹ca o wyborze kolumny przez cz³owieka.*/
 	protected boolean ruch = false;
 	
 	protected Tryby tryb = null;
 	
 	protected boolean nowaGra = false;
+	
+	protected boolean ruchMyszki = false;
 }

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
@@ -23,6 +24,8 @@ public class WyborTrybuGry extends JPanel {
 	WyborTrybuGry() {
 
 		setLayout(new GridLayout(5, 3));
+		//////
+		this.setBackground(Color.RED);
 		add(tytul);
 		add(new JLabel());
 		

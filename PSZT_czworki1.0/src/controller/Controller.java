@@ -24,19 +24,12 @@ public class Controller implements Runnable
 	{
 		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
 		/**
-		view.wyswietlPanelZGra();
-		view.aktualizacja(new Wspolrzedne(5, 0), 0);
-		view.aktualizacja(new Wspolrzedne(5, 1), 1);
-		view.aktualizacja(new Wspolrzedne(4, 0), 0);
-		view.aktualizacja(new Wspolrzedne(3, 0), 1);
-		
-		*/
-		/**
 		 * testowanko wywietlania okna wyboru trybu, bez wyswietlania planszy
 		 * TODO
 		 * wyglad okna koniecznie - pobawie siê jutro - Mateusz Ch
 		 * 
 		 */
+		/*
 		view.wyswietlPanelWyboruGraczy();
 		try {
 			odbierzWiadomosc();
@@ -44,26 +37,41 @@ public class Controller implements Runnable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		view.wylaczPanelWyboruGraczy();
 					
 		model.nowaGra(( (WiadomoscTryb) wiadomosc).jakiTryb());
 		
 		System.out.println(model.getTrybGry());
-		view.wylaczPanelWyboruGraczy();
+		
+		view.wyswietlPanelZGra();
+		view.wyswietlPanelInterfejsuGracza(0);
+		
+		view.wyswietlPanelZGra();
+		view.aktualizacja(new Wspolrzedne(5, 0), 0);
+		view.aktualizacja(new Wspolrzedne(5, 1), 1);
+		view.aktualizacja(new Wspolrzedne(4, 0), 0);
+		view.aktualizacja(new Wspolrzedne(3, 0), 1);
+		
+		*/
+		
 	}
 	
 	
 	@Override
 	public void run()
 	{
+		
 		int ktoryGracz = 0;
+		int xMyszki = 0;
 		// Obiekt przechowuj¹cy informacje, w którym okienku planszy zosta³ w³asnie wrzucony ¿eton. Info od modelu.
-	/*	Wspolrzedne wspolrzedne = null;
+		Wspolrzedne wspolrzedne = null;
 		try
 		{
 			KONIEC_GRY: for(;;)
 			{
 				ustawieniaGry();
 				view.wyswietlPanelZGra();
+				view.wylaczPanelWyboruGraczy();
 				try
 				{
 					NEW_GAME: for(;;)
@@ -95,7 +103,13 @@ public class Controller implements Runnable
 								try
 								{
 									odbierzWiadomosc();
-									if(wiadomosc.czyRuch())
+									if(wiadomosc.czyRuchMyszki())
+									{
+										//System.out.println("Ruch myszki");
+										xMyszki = ((WiadomoscRuchMyszki)wiadomosc).getXMyszki();
+										view.aktualizacjaPaneluIntergejsuGracza(xMyszki);
+									}
+									else if(wiadomosc.czyRuch())
 									{
 										wspolrzedne = model.wrzucZeton(((WiadomoscRuch) wiadomosc).getKtoraKolumna());
 										break;
@@ -116,19 +130,26 @@ public class Controller implements Runnable
 						}
 						view.aktualizacja(wspolrzedne, ktoryGracz);
 					}
+				//w e info o wspolrzednych, na ktore wrzucono zeton!!
+
 				} catch(WyjatekRemis e)
 				{
 					remis();
+					//view.aktualizacja(wspolrzedne, ktoryGracz);
 				}
-				catch(WyajtekWygrana e)
+				catch(WyjatekWygrana e)
 				{
 					wygrana();
+					//view.aktualizacja(wspolrzedne, ktoryGracz);
+				}
+				finally
+				{
+					wyczyscKolejke();
 				}
 			}
 		} catch(InterruptedException e)
 		{}
-		*/
-		
+
 		
 		
 		
@@ -194,6 +215,11 @@ public class Controller implements Runnable
 			return true;
 		else
 			return false;
+	}
+	
+	private void wyczyscKolejke()
+	{
+		kolejkaZadan.clear();
 	}
 	
 	/** Kolejka przechowuj¹ca zadania od View. */

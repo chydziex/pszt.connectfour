@@ -18,8 +18,8 @@ class Plansza extends JPanel
 		// TODO
 		setLayout(null);
 		setBackground(Color.white);
-		wgrajObrazkiZetonow();
-		setBounds(new Rectangle(0, 0, iloscKolumn*obrazekPustePole.getIconWidth(), iloscWierszy*obrazekPustePole.getIconHeight()));
+		setBounds(Stale.plansza);
+		//setOpaque(false);
 		stworzPustaPlansze(iloscWierszy, iloscKolumn);
 
 	}
@@ -49,35 +49,24 @@ class Plansza extends JPanel
 	/** Metoda zwracaj¹ca dok³adne po³o¿enie komponentu w zale¿noœci od wiersza i kolumny, w których ma siê znale¿æ.*/
 	private Rectangle polozenie(Wspolrzedne wspolrzedne)
 	{
-		return new Rectangle(wspolrzedne.getKolumna()*obrazekPustePole.getIconWidth(), wspolrzedne.getWiersz()*obrazekPustePole.getIconHeight(), obrazekPustePole.getIconWidth(), obrazekPustePole.getIconHeight());
+		return new Rectangle(wspolrzedne.getKolumna()*Obrazki.obrazekPustePole.getIconWidth(), wspolrzedne.getWiersz()*Obrazki.obrazekPustePole.getIconHeight(), Obrazki.obrazekPustePole.getIconWidth(), Obrazki.obrazekPustePole.getIconHeight());
 	}
 	
 	/** Metoda zwracaj¹ca dok³adne po³o¿enie komponentu w zale¿noœci od wiersza i kolumny, w których ma siê znale¿æ.*/
 	private Rectangle polozenie(int wiersz, int kolumna)
 	{
-		return new Rectangle(kolumna*obrazekPustePole.getIconWidth(), wiersz*obrazekPustePole.getIconHeight(), obrazekPustePole.getIconWidth(), obrazekPustePole.getIconHeight());
+		return new Rectangle(kolumna*Obrazki.obrazekPustePole.getIconWidth(), wiersz*Obrazki.obrazekPustePole.getIconHeight(), Obrazki.obrazekPustePole.getIconWidth(), Obrazki.obrazekPustePole.getIconHeight());
 	}
 	
 	/** Fabryka pustych pól.*/
 	private JLabel stworzPustePole()
 	{
-		return new JLabel(obrazekPustePole);
+		return new JLabel(Obrazki.obrazekPustePole);
 	}
 	
 	/** Fabryka ¿etonów. Rodzaj ¿etonu zale¿y od kolejnoœci gracza.*/
 	private JLabel stworzZeton(int ktoryGracz)
 	{
-		return new JLabel(obrazkiZetonow[ktoryGracz]);
+		return new JLabel(Obrazki.obrazkiZetonow[ktoryGracz]);
 	}
-	
-	/** Metoda ³aduj¹ca pliki z obrazkami ¿etonów.*/
-	private void wgrajObrazkiZetonow()
-	{
-		obrazkiZetonow[0] = new Ikona(new String("zeton1.bmp"));
-		obrazkiZetonow[1] = new Ikona(new String("zeton2.bmp"));
-	}
-	
-	
-	static final Ikona obrazekPustePole = new Ikona(new String("pustePole.bmp"));
-	static final Ikona[] obrazkiZetonow = new Ikona[2];
 }

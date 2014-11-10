@@ -1,11 +1,16 @@
 package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.concurrent.BlockingQueue;
 
 import javax.swing.JPanel;
 
 import wiadomosc.Wiadomosc;
+import wiadomosc.WiadomoscRuch;
+import wiadomosc.WiadomoscRuchMyszki;
 import wiadomosc.WiadomoscTryb;
 import model.Wspolrzedne;
 
@@ -18,7 +23,7 @@ public class View
 	public View(int iloscWierszy, int iloscKolumn, BlockingQueue<Wiadomosc> kolejkaZadan)
 	{
 		// TODO
-		this.kolejkaZdarzen = kolejkaZadan;
+		kolejkaZdarzen = kolejkaZadan;
 		okno = new Okno(iloscWierszy, iloscKolumn);
 		//nie tworzyc panelu gry, na poczatku ma byc nullem.
 		//stworzPanelWyboruGraczy();
@@ -33,6 +38,12 @@ public class View
 		okno.dodajZeton(wspolrzedne, ktoryGracz);
 	}
 	
+	/** Metoda aktualizuj¹ca pozycjê ¿etonu i strza³ki na panelu interfejsu gracza.*/
+	public void aktualizacjaPaneluIntergejsuGracza(int xMyszki)
+	{
+		okno.aktualizujPanelInterfejsuGracza(xMyszki);
+	}
+	
 	/** Metoda tworz¹ca now¹ grê - czyst¹ planszê.*/
 	public void nowaGra()
 	{
@@ -44,6 +55,7 @@ public class View
 	public void wyswietlPanelInterfejsuGracza(int ktoryGracz)
 	{
 		// TODO
+		okno.wyswietlInterfejsGracza(ktoryGracz);
 	}
 	
 	/** Metoda wy³¹czaj¹ca panel uniemo¿liwja¹c graczowi wrzut ¿etonu.*/
@@ -122,6 +134,7 @@ public class View
 			
 			
 		};
+		
 		wybranoAlgorytmAiListener = new ActionListener (){
 
 			@Override
@@ -130,19 +143,53 @@ public class View
 				// TODO 
 				
 				
-			
-				
 				
 			}
+		};
 		
+		ruchMyszkiListener = new MouseMotionListener()
+		{
+			@Override
+			public void mouseDragged(MouseEvent arg0)
+			{}
 			
-			
-			
+			@Override
+			public void mouseMoved(MouseEvent arg0)
+			{
+				kolejkaZdarzen.offer(new WiadomoscRuchMyszki(arg0.getX()));
+			}
+		};
+		
+		klikMyszkiListener = new MouseListener()
+		{
+
+			@Override
+			public void mouseClicked(MouseEvent arg0)
+			{
+				kolejkaZdarzen.offer(new WiadomoscRuch(okno.ktoraKolumneWskazujeGracz()));
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0)
+			{}
+
+			@Override
+			public void mouseExited(MouseEvent arg0)
+			{}
+
+			@Override
+			public void mousePressed(MouseEvent arg0)
+			{}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0)
+			{}
 		};
 			
 		okno.dodajWyborTrybuListener(wybranoTrybGryListener);
 		okno.dodajWyborAlgorytmuAiListener(wybranoAlgorytmAiListener);
-		
+		okno.dodajPozycjaZetonuIStrzalkiInterfejsListener(ruchMyszkiListener);
+		okno.dodajRuchGraczaListener(klikMyszkiListener);
 		
 	}
 	
@@ -151,4 +198,6 @@ public class View
 	
 	private ActionListener wybranoTrybGryListener;
 	private ActionListener wybranoAlgorytmAiListener;
+	private MouseMotionListener ruchMyszkiListener;
+	private MouseListener klikMyszkiListener;
 }

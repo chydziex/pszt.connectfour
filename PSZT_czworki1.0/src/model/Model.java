@@ -14,12 +14,12 @@ public class Model{// extends Throwable {
 	/**
 	 * zmienna okreœlaj¹ca iloœæ wierszy planszy
 	 */
-	public final int iloscWierszy = 6;
+	public final static int iloscWierszy = 6;
 	
 	/**
 	 * zmienna okreœlaj¹ca iloœæ kolumn w planszy
 	 */
-	public final int iloscKolumn = 7;
+	public final static int iloscKolumn = 7;
 	
 	/**
 	 * obiekt umo¿liwiaj¹cy korzystanie z klasy Gracz
@@ -65,7 +65,7 @@ public class Model{// extends Throwable {
 	 * @return wspó³rzêdne w planszy ostatniego ¿etonu
 	 * @throws Wyjatek - czy wrzucenie ¿etonu spowodowa³o remis, wygran¹ lub b³¹d
 	 */
-	public Wspolrzedne wrzucZeton(int kolumna)throws Wyjatek
+	public Wspolrzedne wrzucZeton(int kolumna)throws WyjatekRemis, WyjatekRuchNiedozwolony, WyjatekWygrana
 	{
 		return analizaRzutu(kolumna);
 	}
@@ -76,7 +76,7 @@ public class Model{// extends Throwable {
 	 * @return wspó³rzêdne w planszy ostatniego ¿etonu
 	 * @throws Wyjatek - czy wrzucenie ¿etonu spowodowa³o remis, wygran¹ lub b³¹d
 	 */
-	public Wspolrzedne wrzucZeton()throws Wyjatek
+	public Wspolrzedne wrzucZeton()throws WyjatekRemis, WyjatekRuchNiedozwolony, WyjatekWygrana
 	{
 		return analizaRzutu(AI.obliczanieRuchu());
 	}
@@ -168,7 +168,7 @@ public class Model{// extends Throwable {
 	 * @return wspó³rzêdne danego rzutu w planszy
 	 * @throws Wyjatek - b³¹d lub koniec gry w postaci wygranej lub zwyciêstwa
 	 */
-	private Wspolrzedne analizaRzutu(int kolumna) throws Wyjatek
+	private Wspolrzedne analizaRzutu(int kolumna) throws WyjatekRemis, WyjatekRuchNiedozwolony, WyjatekWygrana
 	{
 		if(!czyRuchJestDozwolony(kolumna))
 		{

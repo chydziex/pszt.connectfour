@@ -1,8 +1,8 @@
 package model;
 
-import model.Pole.Przynaleznosc;
+import sztucznaInteligencja.Ciagi;
 
-public class Plansza {
+public class Plansza implements Cloneable {
 	
 	private Pole[][] plansza;
 	private int licznik;
@@ -59,7 +59,7 @@ public class Plansza {
 		else
 			return false;
 	}
-	
+		
 	
 	/**
 	 * Funkcja porównuje iloœæ wrzuconych ¿etonów z rozmiarem planszy
@@ -111,6 +111,67 @@ public class Plansza {
 			System.out.println("");
 		}
 		return;
+	}
+	
+	public Ciagi sasiednieCiagi(Przynaleznosc gracz, int kolumna)
+	{
+		Ciagi paczka= new Ciagi(gracz);
+		wyliczAktualnaWspolrzedna( kolumna);
+		
+		paczka.setPion(policzPion(gracz));
+		paczka.setPoziomLewo(policzPoziomLewo(gracz));
+		paczka.setPoziomPrawo(policzPoziomPrawo(gracz));
+		paczka.setLewoSkosGora(policzLewoSkosGora(gracz));
+		paczka.setLewoSkosDol(policzLewoSkosDol(gracz));
+		paczka.setPrawoSkosGora(policzPrawoSkosGora(gracz));
+		paczka.setLewoSkosDol(policzLewoSkosDol(gracz));
+		
+		return paczka;
+	}
+	
+	@Override
+    public Object clone() throws CloneNotSupportedException {
+		Plansza kopiaPlanszy = new Plansza(Model.iloscWierszy, Model.iloscKolumn);
+        Wspolrzedne kopiaWspolrzednych = (Wspolrzedne) aktualnaWspolrzedna.clone();
+        kopiaPlanszy.aktualnaWspolrzedna = kopiaWspolrzednych;
+        kopiaPlanszy.licznik = licznik;
+        for(int i = 0; i < iloscWierszy; i++)
+        	for(int k = 0; k < iloscKolumn; k++)
+        	{
+        		Pole kopiaPola = (Pole) plansza[i][k].clone();
+        		kopiaPlanszy.plansza[i][k] = kopiaPola;
+        	}
+        return kopiaPlanszy;
+    }
+	
+	//Funkcja tylko do testowania klonowania.
+	public void pisz()
+	{
+		System.out.println("Pola:");
+		for(int i = 0; i < iloscWierszy; i++)
+		{
+        	for(int k = 0; k < iloscKolumn; k++)
+        		System.out.print(plansza[i][k] + ",  ");
+        	System.out.println();
+		}
+		System.out.println("licznik: " + licznik);
+		System.out.println("iloscWierszy: " + iloscWierszy);
+		System.out.println("iloscKolumn: " + iloscKolumn);
+		System.out.println("aktualnaWspolrzedna: " + aktualnaWspolrzedna);
+	}
+	
+	//Funkcja tylko do testowania klonowania
+	public void zmien()
+	{
+		for(int i = 0; i < iloscWierszy; i++)
+        	for(int k = 0; k < iloscKolumn; k++)
+        	{
+        		plansza[i][k].wspolrzedna.setWiersz(6);
+        		plansza[i][k].wspolrzedna.setKolumna(5);
+        	}
+		licznik = 12;
+		aktualnaWspolrzedna.setWiersz(4);
+		aktualnaWspolrzedna.setKolumna(4);
 	}
 	
 	/**
@@ -165,12 +226,12 @@ public class Plansza {
 		
 		int licznik=0;
 		
-		for(int wiersz = aktualnaWspolrzedna.getWiersz();wiersz<iloscWierszy;++wiersz)
+		for(int wiersz = (aktualnaWspolrzedna.getWiersz() + 1) ;wiersz<iloscWierszy;++wiersz)
 			if(plansza[wiersz][aktualnaWspolrzedna.getKolumna()].getZeton()==gracz)
 				++licznik;
 			else
-				return licznik;
-		
+				break;
+		++licznik;
 		return licznik;
 	}
 	
@@ -181,21 +242,33 @@ public class Plansza {
 	 */
 	private int policzPoziom(Przynaleznosc gracz)
 	{
+		int licznik = policzPoziomLewo(gracz) + policzPoziomPrawo(gracz) + 1;
+		return licznik;
+		}
+	
+	private int policzPoziomLewo(Przynaleznosc gracz)
+	{
 		int licznik=0;
-		for(int kolumna = aktualnaWspolrzedna.getKolumna();kolumna>=0;--kolumna)
+		for(int kolumna = ( aktualnaWspolrzedna.getKolumna() - 1);kolumna>=0;--kolumna)
 			if(plansza[aktualnaWspolrzedna.getWiersz()][kolumna].getZeton()==gracz)
 				++licznik;
 			else
 				break;
-		--licznik;
-		for(int kolumna = aktualnaWspolrzedna.getKolumna();kolumna<iloscKolumn;++kolumna)
+		
+		return licznik;
+	}
+	
+	private int policzPoziomPrawo(Przynaleznosc gracz)
+	{
+		int licznik=0;
+		for(int kolumna = ( aktualnaWspolrzedna.getKolumna() + 1);kolumna<iloscKolumn;++kolumna)
 			if(plansza[aktualnaWspolrzedna.getWiersz()][kolumna].getZeton()==gracz)
 				++licznik;
 			else
-				return licznik;
+				break;
 		
 		return licznik;
-		}
+	}
 	
 	/**
 	 * Funkcja sprawdza jak d³ugi ci¹g tworzy na lewoskos wrzucony ¿eton
@@ -204,25 +277,37 @@ public class Plansza {
 	 */
 	private int policzLewoSkos(Przynaleznosc gracz)
 	{
+		int licznik = policzLewoSkosGora(gracz) + policzLewoSkosDol(gracz) + 1;		
+		return licznik;
+		}
+	
+	private int policzLewoSkosGora(Przynaleznosc gracz)
+	{
 		int licznik=0;
-		int kolumna = aktualnaWspolrzedna.getKolumna();
-		int wiersz = aktualnaWspolrzedna.getWiersz();
+		int kolumna = (aktualnaWspolrzedna.getKolumna() -1 );
+		int wiersz = (aktualnaWspolrzedna.getWiersz() - 1 );
 		for(;kolumna>=0 && wiersz>=0;--kolumna,--wiersz)
 			if(plansza[wiersz][kolumna].getZeton()==gracz)
 				++licznik;
 			else
 				break;
-		--licznik;
-		kolumna = aktualnaWspolrzedna.getKolumna();
-		wiersz = aktualnaWspolrzedna.getWiersz();
+		
+		return licznik;
+	}
+	
+	private int policzLewoSkosDol(Przynaleznosc gracz)
+	{
+		int licznik=0;
+		int kolumna = ( aktualnaWspolrzedna.getKolumna() + 1);
+		int wiersz = ( aktualnaWspolrzedna.getWiersz() + 1);
 		for(;kolumna<iloscKolumn && wiersz<iloscWierszy;++kolumna,++wiersz)
 			if(plansza[wiersz][kolumna].getZeton()==gracz)
 				++licznik;
 			else
-				return licznik;
-		
+				break;
 		return licznik;
-		}
+	}
+	
 	
 	/**
 	 * Funkcja sprawdza jak d³ugi ci¹g tworzy na prawoskos wrzucony ¿eton
@@ -231,24 +316,36 @@ public class Plansza {
 	 */
 	private int policzPrawoSkos(Przynaleznosc gracz)
 	{
+		int licznik = policzPrawoSkosGora(gracz) + policzPrawoSkosDol(gracz) + 1;
+		return licznik;
+		}
+	
+	private int policzPrawoSkosGora(Przynaleznosc gracz)
+	{
 		int licznik=0;
-		int kolumna = aktualnaWspolrzedna.getKolumna();
-		int wiersz = aktualnaWspolrzedna.getWiersz();
+		int kolumna = ( aktualnaWspolrzedna.getKolumna() + 1 );
+		int wiersz = ( aktualnaWspolrzedna.getWiersz() - 1);
 		for(;kolumna<iloscKolumn && wiersz>=0;++kolumna,--wiersz)
 			if(plansza[wiersz][kolumna].getZeton()==gracz)
 				++licznik;
 			else
 				break;
-		--licznik;
-		kolumna = aktualnaWspolrzedna.getKolumna();
-		wiersz = aktualnaWspolrzedna.getWiersz();
+		return licznik;
+	}
+	
+	private int policzPrawoSkosDol(Przynaleznosc gracz)
+	{
+		int licznik=0;
+		int kolumna = ( aktualnaWspolrzedna.getKolumna() - 1 );
+		int wiersz = ( aktualnaWspolrzedna.getWiersz() + 1 );
 		for(;kolumna>=0 && wiersz<iloscWierszy;--kolumna,++wiersz)
 			if(plansza[wiersz][kolumna].getZeton()==gracz)
 				++licznik;
 			else
-				return licznik;
-		
+				break;
 		return licznik;
-		}
+	}
+	
+
 	
 }

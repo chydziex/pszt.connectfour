@@ -1,13 +1,13 @@
 package model;
 
-class Pole {
+class Pole implements Cloneable {
 	
 	/**
 	 * enum definuj¹cy czy lub do kogo nale¿y zeton znajduj¹cy siê na danym polu
 	 * oparty o zmienn¹ ktoryGracz w klasie Gracz
 	 *
 	 */
-	enum Przynaleznosc {BRAK, GRACZ1, GRACZ2}
+	//enum Przynaleznosc {BRAK, GRACZ1, GRACZ2}
 	
 	/**
 	 * zmienna okreœlaj¹c¹ po³o¿enie danego pola na planszy
@@ -26,8 +26,15 @@ class Pole {
 	 */
 	Pole(int wiersz, int kolumna)
 	{
-		zeton= Przynaleznosc.BRAK;
+		zeton = Przynaleznosc.BRAK;
 		wspolrzedna = new Wspolrzedne(wiersz, kolumna);
+	}
+	
+	/** Konstruktor do klonowania. */
+	Pole(Wspolrzedne wspol)
+	{
+		zeton = Przynaleznosc.BRAK;
+		wspolrzedna = wspol;
 	}
 	
 	/**
@@ -63,4 +70,17 @@ class Pole {
 		this.zeton = zeton;
 	}
 	
+	//Pomocniczno do klonowania
+	public String toString()
+	{
+		return new String(wspolrzedna.toString() + " " + zeton);
+	}
+	
+	@Override
+    public Object clone() throws CloneNotSupportedException {
+        Wspolrzedne kopiaWspolrzednych = (Wspolrzedne) wspolrzedna.clone();
+        Pole kopiaPola = new Pole(kopiaWspolrzednych);
+        kopiaPola.zeton = zeton;
+        return kopiaPola;
+    }
 }

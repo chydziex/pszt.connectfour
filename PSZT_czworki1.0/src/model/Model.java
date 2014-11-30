@@ -46,6 +46,11 @@ public class Model{// extends Throwable {
 		return plansza;
 	}
  	
+ 	public Wspolrzedne getAktualnaWspolrzedna()
+ 	{
+		return plansza.getAktualnaWspolrzedna() ;
+
+ 	}
 	/**
 	 * Funkcja tworzy planszê, graczy i losuje pierwszego do ruchu
 	 * @param tryb - trzeba okreœliæ tryb gry
@@ -183,7 +188,7 @@ public class Model{// extends Throwable {
 			throw new WyjatekRemis();
 		}
 		gracz.zmienGracza();
-		return plansza.getAktualnaWspolrzedna() ;
+		return getAktualnaWspolrzedna() ;
 	}
 }
 

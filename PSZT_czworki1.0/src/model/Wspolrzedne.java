@@ -1,6 +1,6 @@
 package model;
 
-public class Wspolrzedne {
+public class Wspolrzedne implements Cloneable {
 	
 	/**
 	 * zmienna okreœlaj¹capionowe po³o¿enie wspó³rzêdnej
@@ -54,4 +54,15 @@ public class Wspolrzedne {
 	public void setKolumna(int kolumna) {
 		this.kolumna = kolumna;
 	}
+	
+	//Pomocniczo do klonowania.
+	public String toString()
+	{
+		return new String(wiersz + " " + kolumna);
+	}
+	
+	@Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

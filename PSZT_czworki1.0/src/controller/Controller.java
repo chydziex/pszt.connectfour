@@ -6,6 +6,7 @@ import view.View;
 import wiadomosc.Wiadomosc;
 import wiadomosc.WiadomoscRuch;
 import model.Model;
+import model.Plansza;
 import model.RodzajeGraczy;
 import sytuacjeWyjatkowe.*;
 import model.Tryby;
@@ -24,43 +25,62 @@ public class Controller implements Runnable
 	{
 		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
 		/**
-		 * testowanko wywietlania okna wyboru trybu, bez wyswietlania planszy
-		 * TODO
+		 * testowanko klonowania
 		 * wyglad okna koniecznie - pobawie siê jutro - Mateusz Ch
 		 * 
 		 */
-		/*
-		view.wyswietlPanelWyboruGraczy();
+		/*model.nowaGra(Tryby.CZLOWIEKvsCZLOWIEK);
 		try {
-			odbierzWiadomosc();
-		} catch (InterruptedException e) {
+			
+			
+			model.wrzucZeton(0);
+			model.wrzucZeton(0);
+			model.wrzucZeton(1);
+			
+			
+		} catch (WyjatekRemis e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WyjatekRuchNiedozwolony e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WyjatekWygrana e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		view.wylaczPanelWyboruGraczy();
-					
-		model.nowaGra(( (WiadomoscTryb) wiadomosc).jakiTryb());
 		
-		System.out.println(model.getTrybGry());
 		
-		view.wyswietlPanelZGra();
-		view.wyswietlPanelInterfejsuGracza(0);
+		model.getPlansza().pisz();
+		System.out.println();
 		
-		view.wyswietlPanelZGra();
-		view.aktualizacja(new Wspolrzedne(5, 0), 0);
-		view.aktualizacja(new Wspolrzedne(5, 1), 1);
-		view.aktualizacja(new Wspolrzedne(4, 0), 0);
-		view.aktualizacja(new Wspolrzedne(3, 0), 1);
+		Plansza kopiaPlanszy = null;
 		
+		try {
+			
+			kopiaPlanszy = (Plansza) model.getPlansza().clone();
+			
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		kopiaPlanszy.pisz();
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		
+		kopiaPlanszy.zmien();
+		
+		model.getPlansza().pisz();
+		System.out.println();
+		kopiaPlanszy.pisz();
 		*/
-		
 	}
 	
 	
 	@Override
 	public void run()
 	{
-		
 		int ktoryGracz = 0;
 		int xMyszki = 0;
 		// Obiekt przechowuj¹cy informacje, w którym okienku planszy zosta³ w³asnie wrzucony ¿eton. Info od modelu.
@@ -141,12 +161,12 @@ public class Controller implements Runnable
 				} catch(WyjatekRemis e)
 				{
 					remis();
-					//view.aktualizacja(wspolrzedne, ktoryGracz);
+					view.aktualizacja(wspolrzedne, ktoryGracz);
 				}
 				catch(WyjatekWygrana e)
 				{
 					wygrana();
-					//view.aktualizacja(wspolrzedne, ktoryGracz);
+					view.aktualizacja(wspolrzedne, ktoryGracz);
 				}
 				finally
 				{
@@ -155,12 +175,8 @@ public class Controller implements Runnable
 			}
 		} catch(InterruptedException e)
 		{}
-
-		
-		
-		
 	}
-
+	
 	private void ustawieniaGry() throws InterruptedException
 	{
 		//view.nowaGra();

@@ -1,9 +1,7 @@
+/sztucznaInteligencja/
 /Main.class
-/controller
-/model
-/src (1).rar
-/sytuacjeWyjatkowe
-/view
-/TestGita.class
-/TestBranchGita.class
-/wiadomosc
+/controller/
+/model/
+/sytuacjeWyjatkowe/
+/view/
+/wiadomosc/

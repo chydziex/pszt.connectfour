@@ -13,6 +13,8 @@ import model.RodzajeGraczy;
 import sytuacjeWyjatkowe.*;
 import sztucznaInteligencja.Heurystyka;
 import sztucznaInteligencja.HeurystykaMaxDl;
+import sztucznaInteligencja.HeurystykaMaxIloscCiagow;
+import sztucznaInteligencja.HeurystykaMaxWplywuNaSwojePola;
 import sztucznaInteligencja.HeurystykaZWaga;
 import sztucznaInteligencja.SztucznaInteligencja;
 import model.Tryby;
@@ -32,15 +34,21 @@ public class Controller implements Runnable
 		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
 		//wczytaj Ustawienia Gry Z Pakietu Obslugi Plikow
 		//wczytajUstawienia();
+		
 		/*
 		Plansza plansza = new Plansza(Model.iloscWierszy, Model.iloscKolumn);
 		plansza.sprawdzCzyWygrana(3, 0);
 		plansza.sprawdzCzyWygrana(3, 0);
+		plansza.sprawdzCzyWygrana(3, 0);
+		plansza.sprawdzCzyWygrana(2, 0);
+		//plansza.sprawdzCzyWygrana(1, 0);
+		
+		plansza.pisz();
 		
 		Heurystyka heu = new HeurystykaMaxDl(Przynaleznosc.GRACZ1);
 		HeurystykaZWaga heuzw= new HeurystykaZWaga(heu, 1);
-		
-		heuzw.getWartosc(plansza, kolumna)
+		System.out.println();
+		System.out.println("Heurystyka: " + heu.getWartosc(plansza, 1));
 		*/
 		
 		//dobre
@@ -101,6 +109,7 @@ public class Controller implements Runnable
 	@Override
 	public void run()
 	{
+		
 		int ktoryGracz = 0;
 		int xMyszki = 0;
 		// Obiekt przechowuj¹cy informacje, w którym okienku planszy zosta³ w³asnie wrzucony ¿eton. Info od modelu.
@@ -184,6 +193,7 @@ public class Controller implements Runnable
 				}
 		} catch(InterruptedException e)
 		{}
+		
 	}
 	
 	/** Funkcja wczytujaca informacje o konfiguracji dzialania programu jesli jest komputer. */

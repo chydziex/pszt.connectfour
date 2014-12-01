@@ -41,11 +41,12 @@ public class SztucznaInteligencja
 			{
 				e.printStackTrace();
 			}
+			
 			//wrzucamy zeton do "wirtualnej planszy do konkretnej kolumny.
 			if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
 				continue;
-			kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
-			aktualnaWartoscWezla = alfaBeta(kopiaPlanszy, 1, alfa, beta);
+			//kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
+			aktualnaWartoscWezla = alfaBeta(kopiaPlanszy, indeksyKolumn[i], 1, alfa, beta);
 			System.out.println("Kolumna: " + indeksyKolumn[i] + " Ocena: " + aktualnaWartoscWezla);
 			if(aktualnaWartoscWezla > maxWartoscWezla)
 			{
@@ -58,13 +59,13 @@ public class SztucznaInteligencja
 		return maxKolumna;
 	}
 	
-	public double ocenWezel(final Plansza plansza, Wspolrzedne aktualnaWspolrzedna)
+	public double ocenWezel(final Plansza plansza, int doKtorejKolumnyChcemyWrzucic)
 	{
 		double ocena = 0;
 		if(mojeHeurystyki == null)
 			return 0;
 		for(HeurystykaZWaga heurystyka : mojeHeurystyki)
-			ocena += heurystyka.getWartosc(plansza, aktualnaWspolrzedna.getKolumna());
+			ocena += heurystyka.getWartosc(plansza, doKtorejKolumnyChcemyWrzucic);
 		return ocena;
 	}
 	
@@ -72,7 +73,7 @@ public class SztucznaInteligencja
 	 *  glebokosc: ile ruchow do przodu analizujemy. 1 - rozpatrujemy stan gry po naszym pierwszym ruchu.
 	 *  plansza: "wirtualna" plansza po wrzuceniu do niej zetonu reprezentujacego nasz hipotetyczny ruch, ktory analizujemy.
 	 */
-	private double alfaBeta(final Plansza plansza, int glebokosc, double alfa, double beta)
+	private double alfaBeta(final Plansza plansza, int doKtorejKolumnyChcemyWrzucic, int glebokosc, double alfa, double beta)
 	{
 		// TODO
 		System.out.println(glebokosc);
@@ -80,8 +81,8 @@ public class SztucznaInteligencja
 		Plansza kopiaPlanszy = null;
 		if(glebokosc == glebokoscDrzewa)
 		{
-			System.out.println("Ocena: " + ocenWezel(plansza, plansza.getAktualnaWspolrzedna()));
-			return ocenWezel(plansza, plansza.getAktualnaWspolrzedna());
+			System.out.println("Ocena: " + ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic));
+			return ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic);
 		}
 		// jesli teraz jest nasz ruch
 		if(glebokosc %2 == 1)
@@ -99,7 +100,7 @@ public class SztucznaInteligencja
 				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
 					continue;
 				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
-				temp = alfaBeta(kopiaPlanszy, glebokosc + 1, alfa, beta);
+				temp = alfaBeta(kopiaPlanszy, indeksyKolumn[i], glebokosc + 1, alfa, beta);
 				System.out.println("Temp " + i + ": " + temp );
 				if(temp > alfa)
 				{
@@ -129,7 +130,7 @@ public class SztucznaInteligencja
 				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
 					continue;
 				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
-				temp = alfaBeta(kopiaPlanszy, glebokosc + 1, alfa, beta);
+				temp = alfaBeta(kopiaPlanszy, indeksyKolumn[i], glebokosc + 1, alfa, beta);
 				if(temp < beta)
 					beta = temp;
 				if(alfa >= beta)

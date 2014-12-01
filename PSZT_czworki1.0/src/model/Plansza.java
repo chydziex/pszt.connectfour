@@ -118,7 +118,7 @@ public class Plansza implements Cloneable {
 		Ciagi paczka= new Ciagi(gracz);
 		wyliczAktualnaWspolrzedna( kolumna);
 		
-		paczka.setPion(policzPion(gracz));
+		paczka.setPion(policzPion(gracz) - 1);
 		paczka.setPoziomLewo(policzPoziomLewo(gracz));
 		paczka.setPoziomPrawo(policzPoziomPrawo(gracz));
 		paczka.setLewoSkosGora(policzLewoSkosGora(gracz));

@@ -41,6 +41,8 @@ public class SztucznaInteligencja
 				e.printStackTrace();
 			}
 			//wrzucamy zeton do "wirtualnej planszy do konkretnej kolumny.
+			if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
+				continue;
 			kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
 			aktualnaWartoscWezla = alfaBeta(kopiaPlanszy, 1, alfa, beta);
 			System.out.println("Ocena ruchu: " + aktualnaWartoscWezla);
@@ -92,6 +94,8 @@ public class SztucznaInteligencja
 				{
 					e.printStackTrace();
 				}
+				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
+					continue;
 				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
 				temp = alfaBeta(kopiaPlanszy, glebokosc + 1, alfa, beta);
 				System.out.println("Temp " + i + ": " + temp );
@@ -120,6 +124,8 @@ public class SztucznaInteligencja
 				{
 					e.printStackTrace();
 				}
+				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
+					continue;
 				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
 				temp = alfaBeta(kopiaPlanszy, glebokosc + 1, alfa, beta);
 				if(temp < beta)

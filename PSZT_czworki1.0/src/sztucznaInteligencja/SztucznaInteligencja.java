@@ -9,16 +9,18 @@ import model.Przynaleznosc;
 //TODO
 public class SztucznaInteligencja
 {
-	public SztucznaInteligencja(Vector<HeurystykaZWaga> mojeHeurystyki)
+	public SztucznaInteligencja(Vector<HeurystykaZWaga> mojeHeurystyki, int kolejnosc)
 	{
 		this.mojeHeurystyki = mojeHeurystyki;
+		ktoryJestAI = kolejnosc;
 	}
 	
 	public int wybierzKolumne(final Plansza plansza)
 	{
 		//TODO		
 
-		int najlepszaKolumna = 0, max = Integer.MIN_VALUE, temp;
+		int najlepszaKolumna = 0, maxWartoscWezla = Integer.MIN_VALUE, aktualnaWartoscWezla, maxKolumna = -1;
+		int alfa = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
 		Plansza kopiaPlanszy = null;
 		
 		for(int i = 0; i < Model.iloscKolumn; i++)
@@ -31,25 +33,33 @@ public class SztucznaInteligencja
 			{
 				e.printStackTrace();
 			}
-			//wrzucenie zetonu do "wirtualnej" planszy
-			//kopiaPlanszy.wrzucZeton(i);
-			temp = alfaBeta(kopiaPlanszy);
+			//wrzucamy zeton do "wirtualnej planszy do konkretnej kolumny.
+			kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
+			aktualnaWartoscWezla = alfaBeta(kopiaPlanszy, alfa, beta);
+			if(aktualnaWartoscWezla > maxWartoscWezla)
+			{
+				maxWartoscWezla = aktualnaWartoscWezla;
+				maxKolumna = indeksyKolumn[i];
+			}
 		}
 		
-		return 0;
+		return maxKolumna;
 	}
 	
 	private final Vector<HeurystykaZWaga> mojeHeurystyki;
 	private final int[] indeksyKolumn = {3, 4, 2, 5, 1, 6, 0};
 	
 	/** funkcja relizujaca algorytm alfa - beta. Zwraca wartosc f-cji oceniajacej dany ruch. */
-	private int alfaBeta(final Plansza plansza)
+	private int alfaBeta(final Plansza plansza, int alfa, int beta)
 	{
 		// TODO
 		return 0;
 	}
 	
 	
+	/** Skladowa informujaca, ktorym w kolejnosci graczem jest AI. Jesli w grze AI nie ma, parametr ma wartosc -1. */
+	// nadanie wartosci w f-cji odbierajacej ustawienia od pakietu obslugi plikow
+	private int ktoryJestAI = -1;
 	
 	
 	

@@ -9,6 +9,7 @@ import model.Model;
 import model.Plansza;
 import model.RodzajeGraczy;
 import sytuacjeWyjatkowe.*;
+import sztucznaInteligencja.SztucznaInteligencja;
 import model.Tryby;
 import model.Wspolrzedne;
 import wiadomosc.*;
@@ -24,36 +25,26 @@ public class Controller implements Runnable
 	public Controller()
 	{
 		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
+		//wczytaj Ustawienia Gry Z Pakietu Obslugi Plikow
+		//wczytajUstawienia();
+		
 		/**
 		 * testowanko klonowania
 		 * wyglad okna koniecznie - pobawie siê jutro - Mateusz Ch
 		 * 
 		 */
-		/*model.nowaGra(Tryby.CZLOWIEKvsCZLOWIEK);
-		try {
+		//model.nowaGra(Tryby.CZLOWIEKvsCZLOWIEK);
+/*
+			model.getPlansza().sprawdzCzyWygrana(1, 0);
+			model.getPlansza().sprawdzCzyWygrana(1, 1);
 			
-			
-			model.wrzucZeton(0);
-			model.wrzucZeton(0);
-			model.wrzucZeton(1);
-			
-			
-		} catch (WyjatekRemis e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (WyjatekRuchNiedozwolony e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (WyjatekWygrana e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		
 		
 		model.getPlansza().pisz();
 		System.out.println();
-		
-		Plansza kopiaPlanszy = null;
+		*/
+		/*Plansza kopiaPlanszy = null;
 		
 		try {
 			
@@ -89,24 +80,21 @@ public class Controller implements Runnable
 		{
 			KONIEC_GRY: for(;;)
 			{
-				ustawieniaGry();
-				view.wyswietlPanelZGra();
-				view.wylaczPanelWyboruGraczy();
+				nowaGra();
 				try
 				{
 					NEW_GAME: for(;;)
 					{
 						if(kolejkaZadan.size() > 0)
-							sprzatnijKolejke();
-						if(wiadomosc.czyNowaGra())
-							break NEW_GAME;
-				
+							sprzatnijKolejke();				
 						ktoryGracz = model.ktoryGracz();
+						
 						if(model.czyjRuch() == RodzajeGraczy.KOMPUTER)
 						{
 							try
 							{
-								wspolrzedne = model.wrzucZeton();
+								System.out.println("Dobrze");
+								wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
 							} catch(WyjatekRuchNiedozwolony e)
 							{
 								System.out.println("Blad algorytmu! Ruch niedozwolony!");
@@ -140,12 +128,6 @@ public class Controller implements Runnable
 										wspolrzedne = model.wrzucZeton(((WiadomoscRuch) wiadomosc).getKtoraKolumna());
 										break;
 									}
-									else if(wiadomosc.czyNowaGra())
-									{
-										view.wylaczPanelInterfejsuGracza();
-										view.nowaGra();
-										break NEW_GAME;
-									}
 								} catch(WyjatekRuchNiedozwolony e)
 								{
 									//do zmiany
@@ -177,17 +159,26 @@ public class Controller implements Runnable
 		{}
 	}
 	
-	private void ustawieniaGry() throws InterruptedException
+	/** Funckaj wczytujaca informacje o konfiguracji dzialania programu jesli jest komputer. */
+	private void wczytajUstawienia()
 	{
-		//view.nowaGra();
+		//TODO
+	}
+	
+	private void nowaGra() throws InterruptedException
+	{
+		//TO MODIFY
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
+		//if(wiadomosc.jakiTryb() == Tryby.AIvsAI)
+			//model.nowaGra(wiadomosc.jakiTryb(), ktoryJestAI);
 		model.nowaGra(wiadomosc.jakiTryb());
 		if(czyWGrzeKomputer())
-		{
-			view.wyswietlPanelWyboruAlgorytmuAI();
-			odbierzWiadomosc();
+		{	
+			AI = new SztucznaInteligencja(null, 0);
 		}
+		view.wyswietlPanelZGra();
+		view.wylaczPanelWyboruGraczy();
 	}
 	
 	/** Metoda obs³uguj¹ca sytuacjê koñca gry - remis.*/
@@ -254,6 +245,8 @@ public class Controller implements Runnable
 	
 	/** Referencja na model. */
 	private final Model model = new Model();
+	
+	private SztucznaInteligencja AI = null;
 	
 	/** Referencja na widok. */
 	private final View view;

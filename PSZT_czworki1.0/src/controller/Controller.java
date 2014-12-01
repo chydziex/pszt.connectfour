@@ -89,8 +89,6 @@ public class Controller implements Runnable
 		Wspolrzedne wspolrzedne = null;
 		try
 		{
-			KONIEC_GRY: for(;;)
-			{
 				try
 				{
 					NEW_GAME: for(;;)
@@ -110,7 +108,7 @@ public class Controller implements Runnable
 							{
 								System.out.println("Blad algorytmu! Ruch niedozwolony!");
 								e.printStackTrace();
-								break KONIEC_GRY;
+								break;
 							}
 						}
 						//ruch cz³owieka
@@ -158,14 +156,14 @@ public class Controller implements Runnable
 				}
 				catch(WyjatekWygrana e)
 				{
-					wygrana();
+					//wygrana();
 					view.aktualizacja(wspolrzedne, ktoryGracz);
+					System.out.println("Wygrana!");
 				}
 				finally
 				{
 					wyczyscKolejke();
 				}
-			}
 		} catch(InterruptedException e)
 		{}
 	}

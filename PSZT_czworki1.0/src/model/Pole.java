@@ -2,12 +2,6 @@ package model;
 
 class Pole implements Cloneable {
 	
-	/**
-	 * enum definuj¹cy czy lub do kogo nale¿y zeton znajduj¹cy siê na danym polu
-	 * oparty o zmienn¹ ktoryGracz w klasie Gracz
-	 *
-	 */
-	//enum Przynaleznosc {BRAK, GRACZ1, GRACZ2}
 	
 	/**
 	 * zmienna okreœlaj¹c¹ po³o¿enie danego pola na planszy
@@ -45,15 +39,6 @@ class Pole implements Cloneable {
 		return wspolrzedna;
 	}
 	
-	
-	/**
-	 * seter zmiennej wspolrzedna
-	 * @param wspolrzedna
-	 */
-	public void setWspolrzedna(Wspolrzedne wspolrzedna) {
-		this.wspolrzedna = wspolrzedna;
-	}
-
 	/**
 	 * geter zmiennej zeton
 	 * @return przynale¿noœæ ¿etonu (zeton)

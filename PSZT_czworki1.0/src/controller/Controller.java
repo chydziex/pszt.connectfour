@@ -1,4 +1,5 @@
 package controller;
+import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -7,8 +8,12 @@ import wiadomosc.Wiadomosc;
 import wiadomosc.WiadomoscRuch;
 import model.Model;
 import model.Plansza;
+import model.Przynaleznosc;
 import model.RodzajeGraczy;
 import sytuacjeWyjatkowe.*;
+import sztucznaInteligencja.Heurystyka;
+import sztucznaInteligencja.HeurystykaMaxDl;
+import sztucznaInteligencja.HeurystykaZWaga;
 import sztucznaInteligencja.SztucznaInteligencja;
 import model.Tryby;
 import model.Wspolrzedne;
@@ -27,6 +32,12 @@ public class Controller implements Runnable
 		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
 		//wczytaj Ustawienia Gry Z Pakietu Obslugi Plikow
 		//wczytajUstawienia();
+		try {
+			nowaGra();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		/**
 		 * testowanko klonowania
@@ -80,7 +91,6 @@ public class Controller implements Runnable
 		{
 			KONIEC_GRY: for(;;)
 			{
-				nowaGra();
 				try
 				{
 					NEW_GAME: for(;;)
@@ -95,6 +105,7 @@ public class Controller implements Runnable
 							{
 								System.out.println("Dobrze");
 								wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
+								System.out.println("----- KONIEC RUCHU KOMPA -----");
 							} catch(WyjatekRuchNiedozwolony e)
 							{
 								System.out.println("Blad algorytmu! Ruch niedozwolony!");
@@ -159,26 +170,49 @@ public class Controller implements Runnable
 		{}
 	}
 	
-	/** Funckaj wczytujaca informacje o konfiguracji dzialania programu jesli jest komputer. */
+	/** Funkcja wczytujaca informacje o konfiguracji dzialania programu jesli jest komputer. */
 	private void wczytajUstawienia()
 	{
 		//TODO
 	}
 	
+	/** Funkcja inicjalizujaca model: wysyla mu tryb gry i potrzebne informacje. */
+	private void inicjalizujModel()
+	{
+		if(wiadomosc.jakiTryb() == Tryby.AIvsCZLOWIEK)
+			model.nowaGra(wiadomosc.jakiTryb(), AI.getKtoryJestAI());
+		else
+			model.nowaGra(wiadomosc.jakiTryb());
+	}
+	
 	private void nowaGra() throws InterruptedException
 	{
 		//TO MODIFY
+		int ktoryKomputer = 0;
+		int glebokoscDrzewa = 2;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
-		//if(wiadomosc.jakiTryb() == Tryby.AIvsAI)
-			//model.nowaGra(wiadomosc.jakiTryb(), ktoryJestAI);
-		model.nowaGra(wiadomosc.jakiTryb());
 		if(czyWGrzeKomputer())
 		{	
-			AI = new SztucznaInteligencja(null, 0);
+			//stworzyc wektor heurystyk z wagami i przekazac
+			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(wyznaczPrzynaleznosc(ktoryKomputer)), ktoryKomputer));
+			AI = new SztucznaInteligencja(vectorHeurystyk, ktoryKomputer, glebokoscDrzewa);
 		}
+		
+		inicjalizujModel();
+		
 		view.wyswietlPanelZGra();
 		view.wylaczPanelWyboruGraczy();
+	}
+	
+	private Przynaleznosc wyznaczPrzynaleznosc(int ktoryGracz)
+	{
+		if(ktoryGracz == 0)
+			return Przynaleznosc.GRACZ1;
+		if(ktoryGracz == 1)
+			return Przynaleznosc.GRACZ2;
+		return null;
 	}
 	
 	/** Metoda obs³uguj¹ca sytuacjê koñca gry - remis.*/
@@ -229,7 +263,7 @@ public class Controller implements Runnable
 	/** Metoda sprawdzaj¹ca, czy w grze jest komputer: tryby Player vs CPU lub CPU vs CPU. Jeœli tak, zwraca true, w przeciwnym przypadku false. */
 	private boolean czyWGrzeKomputer()
 	{
-		if(model.getTrybGry() == Tryby.AIvsAI || model.getTrybGry() == Tryby.AIvsCZLOWIEK)
+		if(wiadomosc.jakiTryb() == Tryby.AIvsAI || wiadomosc.jakiTryb() == Tryby.AIvsCZLOWIEK)
 			return true;
 		else
 			return false;

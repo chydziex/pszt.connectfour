@@ -5,22 +5,29 @@ import java.util.Vector;
 import model.Model;
 import model.Plansza;
 import model.Przynaleznosc;
+import model.Wspolrzedne;
 
 //TODO
 public class SztucznaInteligencja
 {
-	public SztucznaInteligencja(Vector<HeurystykaZWaga> mojeHeurystyki, int kolejnosc)
+	public SztucznaInteligencja(Vector<HeurystykaZWaga> mojeHeurystyki, int kolejnosc, int glebokoscD)
 	{
 		this.mojeHeurystyki = mojeHeurystyki;
+		glebokoscDrzewa = glebokoscD;
 		ktoryJestAI = kolejnosc;
+	}
+	
+	public int getKtoryJestAI()
+	{
+		return ktoryJestAI;
 	}
 	
 	public int wybierzKolumne(final Plansza plansza)
 	{
 		//TODO		
 
-		int najlepszaKolumna = 0, maxWartoscWezla = Integer.MIN_VALUE, aktualnaWartoscWezla, maxKolumna = -1;
-		int alfa = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
+		int najlepszaKolumna = 0, maxKolumna = -1;
+		double aktualnaWartoscWezla, maxWartoscWezla = Double.NEGATIVE_INFINITY, alfa = Double.NEGATIVE_INFINITY, beta = Double.POSITIVE_INFINITY;
 		Plansza kopiaPlanszy = null;
 		
 		for(int i = 0; i < Model.iloscKolumn; i++)
@@ -35,7 +42,8 @@ public class SztucznaInteligencja
 			}
 			//wrzucamy zeton do "wirtualnej planszy do konkretnej kolumny.
 			kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
-			aktualnaWartoscWezla = alfaBeta(kopiaPlanszy, alfa, beta);
+			aktualnaWartoscWezla = alfaBeta(kopiaPlanszy, 1, alfa, beta);
+			System.out.println("Ocena ruchu: " + aktualnaWartoscWezla);
 			if(aktualnaWartoscWezla > maxWartoscWezla)
 			{
 				maxWartoscWezla = aktualnaWartoscWezla;
@@ -46,21 +54,89 @@ public class SztucznaInteligencja
 		return maxKolumna;
 	}
 	
-	private final Vector<HeurystykaZWaga> mojeHeurystyki;
-	private final int[] indeksyKolumn = {3, 4, 2, 5, 1, 6, 0};
-	
-	/** funkcja relizujaca algorytm alfa - beta. Zwraca wartosc f-cji oceniajacej dany ruch. */
-	private int alfaBeta(final Plansza plansza, int alfa, int beta)
+	public double ocenWezel(final Plansza plansza, Wspolrzedne aktualnaWspolrzedna)
 	{
-		// TODO
-		return 0;
+		double ocena = 0;
+		if(mojeHeurystyki == null)
+			return 0;
+		for(HeurystykaZWaga heurystyka : mojeHeurystyki)
+			ocena += heurystyka.getWartosc(plansza, aktualnaWspolrzedna.getKolumna());
+		return ocena;
 	}
 	
+	/** funkcja relizujaca algorytm alfa - beta. Zwraca wartosc f-cji oceniajacej dany ruch.
+	 *  glebokosc: ile ruchow do przodu analizujemy. 1 - rozpatrujemy stan gry po naszym pierwszym ruchu.
+	 *  plansza: "wirtualna" plansza po wrzuceniu do niej zetonu reprezentujacego nasz hipotetyczny ruch, ktory analizujemy.
+	 */
+	private double alfaBeta(final Plansza plansza, int glebokosc, double alfa, double beta)
+	{
+		// TODO
+		System.out.println(glebokosc);
+		double temp;
+		Plansza kopiaPlanszy = null;
+		if(glebokosc == glebokoscDrzewa)
+		{
+			System.out.println("Ocena: " + ocenWezel(plansza, plansza.getAktualnaWspolrzedna()));
+			return ocenWezel(plansza, plansza.getAktualnaWspolrzedna());
+		}
+		// jesli teraz jest nasz ruch
+		if(glebokosc %2 == 1)
+		{
+			for(int i = 0; i < Model.iloscKolumn; i++)
+			{
+				try
+				{
+					kopiaPlanszy = (Plansza) plansza.clone();
+					
+				}catch (CloneNotSupportedException e)
+				{
+					e.printStackTrace();
+				}
+				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
+				temp = alfaBeta(kopiaPlanszy, glebokosc + 1, alfa, beta);
+				System.out.println("Temp " + i + ": " + temp );
+				if(temp > alfa)
+				{
+					alfa = temp;
+				}
+				if(alfa >= beta)
+				{
+					System.out.println(glebokosc + " " + i + " zwracamy bete = " + beta);
+					return beta;
+				}
+			}
+			return alfa;
+		}
+		// jesli teraz jest ruch przeciwnika
+		else
+		{
+			for(int i = 0; i < Model.iloscKolumn; i++)
+			{
+				try
+				{
+					kopiaPlanszy = (Plansza) plansza.clone();
+					
+				}catch (CloneNotSupportedException e)
+				{
+					e.printStackTrace();
+				}
+				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
+				temp = alfaBeta(kopiaPlanszy, glebokosc + 1, alfa, beta);
+				if(temp < beta)
+					beta = temp;
+				if(alfa >= beta)
+					return alfa;
+			}
+			return beta;
+		}
+	}
 	
 	/** Skladowa informujaca, ktorym w kolejnosci graczem jest AI. Jesli w grze AI nie ma, parametr ma wartosc -1. */
 	// nadanie wartosci w f-cji odbierajacej ustawienia od pakietu obslugi plikow
-	private int ktoryJestAI = -1;
-	
+	private final int ktoryJestAI;
+	private final int glebokoscDrzewa;
+	private final Vector<HeurystykaZWaga> mojeHeurystyki;
+	private final int[] indeksyKolumn = {3, 4, 2, 5, 1, 6, 0};
 	
 	
 	//private DrzewoGry drzewoGry;

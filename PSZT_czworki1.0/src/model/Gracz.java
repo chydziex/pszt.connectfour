@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Random;
-
 public class Gracz {
 
 	/**Zmienna informuj¹ca czy aktualny gracz to cz³owiek czy komuter*/
@@ -26,18 +24,10 @@ public class Gracz {
 		return trybGry;
 	}
 	
-	/**W przypadku gdy gracze s¹ tego samego rodzaju funkcja losuje wartoœæ zmiennej ktoryGracz, w przeciwnym przypadku losuje zmienn¹ aktualnyGracz*/
-	public void losujGracza()
+	public void ustawAI(int ktoreAI)
 	{
-		Random r = new Random(); 
-		int temp;
-		temp=r.nextInt(2);
-		
-		if(trybGry==Tryby.CZLOWIEKvsCZLOWIEK||trybGry==Tryby.AIvsAI)
-			ktoryGracz=temp;
-		
 		if(trybGry.equals(Tryby.AIvsCZLOWIEK))
-			if(temp==0)
+			if(ktoreAI==0)
 				aktualnyGracz=RodzajeGraczy.KOMPUTER;
 			else
 				aktualnyGracz=RodzajeGraczy.CZLOWIEK;

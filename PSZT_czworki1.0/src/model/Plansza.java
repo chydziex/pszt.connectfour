@@ -16,7 +16,7 @@ public class Plansza implements Cloneable {
 	 * @param ileWierszy
 	 * @param ileKolumn
 	 */
-	Plansza(int ileWierszy, int ileKolumn)
+	public Plansza(int ileWierszy, int ileKolumn)
 	{
 		licznik=0;
 		iloscWierszy=ileWierszy;

@@ -13,7 +13,7 @@ public class HeurystykaZWaga
 	private final Heurystyka heurystyka;
 	private int waga;
 	
-	int getWartosc(Plansza makietaRuchu, int kolumna)
+	public int getWartosc(Plansza makietaRuchu, int kolumna)
 	{
 		return heurystyka.getWartosc(makietaRuchu, kolumna);
 	}

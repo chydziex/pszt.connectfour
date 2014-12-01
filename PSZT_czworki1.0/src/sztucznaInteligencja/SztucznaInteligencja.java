@@ -1,5 +1,6 @@
 package sztucznaInteligencja;
 
+import java.util.Random;
 import java.util.Vector;
 
 import model.Model;
@@ -25,7 +26,7 @@ public class SztucznaInteligencja
 	public int wybierzKolumne(final Plansza plansza)
 	{
 		//TODO		
-
+		Vector<Integer> vectorNajlepszychKolumn= new Vector<Integer>();
 		int najlepszaKolumna = 0, maxKolumna = -1;
 		double aktualnaWartoscWezla, maxWartoscWezla = Double.NEGATIVE_INFINITY, alfa = Double.NEGATIVE_INFINITY, beta = Double.POSITIVE_INFINITY;
 		Plansza kopiaPlanszy = null;
@@ -45,14 +46,15 @@ public class SztucznaInteligencja
 				continue;
 			kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
 			aktualnaWartoscWezla = alfaBeta(kopiaPlanszy, 1, alfa, beta);
-			System.out.println("Ocena ruchu: " + aktualnaWartoscWezla);
+			System.out.println("Kolumna: " + indeksyKolumn[i] + " Ocena: " + aktualnaWartoscWezla);
 			if(aktualnaWartoscWezla > maxWartoscWezla)
 			{
 				maxWartoscWezla = aktualnaWartoscWezla;
 				maxKolumna = indeksyKolumn[i];
+				System.out.println("Znalazlem lepsza kolumne: " + maxKolumna);
 			}
 		}
-		
+		//int indeks = (rand.nextInt())%(vectorNajlepszychKolumn.size());
 		return maxKolumna;
 	}
 	
@@ -143,6 +145,7 @@ public class SztucznaInteligencja
 	private final int glebokoscDrzewa;
 	private final Vector<HeurystykaZWaga> mojeHeurystyki;
 	private final int[] indeksyKolumn = {3, 4, 2, 5, 1, 6, 0};
+	private Random rand = new Random();
 	
 	
 	//private DrzewoGry drzewoGry;

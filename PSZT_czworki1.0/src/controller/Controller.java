@@ -32,12 +32,30 @@ public class Controller implements Runnable
 		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
 		//wczytaj Ustawienia Gry Z Pakietu Obslugi Plikow
 		//wczytajUstawienia();
+		/*
+		Plansza plansza = new Plansza(Model.iloscWierszy, Model.iloscKolumn);
+		plansza.sprawdzCzyWygrana(3, 0);
+		plansza.sprawdzCzyWygrana(3, 0);
+		
+		Heurystyka heu = new HeurystykaMaxDl(Przynaleznosc.GRACZ1);
+		HeurystykaZWaga heuzw= new HeurystykaZWaga(heu, 1);
+		
+		heuzw.getWartosc(plansza, kolumna)
+		*/
+		
+		//dobre
+		
 		try {
 			nowaGra();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
+		
+		
 		
 		/**
 		 * testowanko klonowania
@@ -187,14 +205,14 @@ public class Controller implements Runnable
 	{
 		//TO MODIFY
 		int ktoryKomputer = 0;
-		int glebokoscDrzewa = 2;
+		int glebokoscDrzewa = 1;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
 		if(czyWGrzeKomputer())
 		{	
 			//stworzyc wektor heurystyk z wagami i przekazac
 			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(wyznaczPrzynaleznosc(ktoryKomputer)), ktoryKomputer));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
 			AI = new SztucznaInteligencja(vectorHeurystyk, ktoryKomputer, glebokoscDrzewa);
 		}
 		

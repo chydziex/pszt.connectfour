@@ -80,6 +80,15 @@ public class SztucznaInteligencja
 		System.out.println(glebokosc);
 		double temp;
 		Plansza kopiaPlanszy = null;
+		try
+		{
+			kopiaPlanszy = (Plansza) plansza.clone();
+			
+		}catch (CloneNotSupportedException e)
+		{
+			e.printStackTrace();
+		}
+		kopiaPlanszy.sprawdzCzyWygrana(doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 		if(glebokosc == glebokoscDrzewa)
 		{
 			
@@ -95,37 +104,26 @@ public class SztucznaInteligencja
 				return ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 			}
 		}
-		// jesli teraz jest nasz ruch
+		// minimalizujemy
 		if(glebokosc %2 == 1)
 		{
-			try
-			{
-				kopiaPlanszy = (Plansza) plansza.clone();
-				
-			}catch (CloneNotSupportedException e)
-			{
-				e.printStackTrace();
-			}
-			kopiaPlanszy.sprawdzCzyWygrana(doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 			for(int i = 0; i < Model.iloscKolumn; i++)
 			{
 				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
 					continue;
 				temp = alfaBeta(kopiaPlanszy, indeksyKolumn[i], glebokosc + 1, alfa, beta);
 				System.out.println("Temp " + indeksyKolumn[i] + ": " + temp );
-				if(temp > alfa)
-				{
-					alfa = temp;
-				}
+				
+			
+				if(temp < beta)
+					beta = temp;
 				if(alfa >= beta)
-				{
-					System.out.println(glebokosc + " " + i + " zwracamy bete = " + beta);
-					return beta;
-				}
+					return alfa;
 			}
-			return alfa;
+			return beta;
+			
 		}
-		// jesli teraz jest ruch przeciwnika
+		// maksymalizujemy
 		else
 		{
 			for(int i = 0; i < Model.iloscKolumn; i++)
@@ -140,14 +138,19 @@ public class SztucznaInteligencja
 				}
 				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
 					continue;
-				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], (ktoryJestAI + 1)%2 );
+				//kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], (ktoryJestAI + 1)%2 );
 				temp = alfaBeta(kopiaPlanszy, indeksyKolumn[i], glebokosc + 1, alfa, beta);
-				if(temp < beta)
-					beta = temp;
+				if(temp > alfa)
+				{
+					alfa = temp;
+				}
 				if(alfa >= beta)
-					return alfa;
+				{
+					System.out.println(glebokosc + " " + i + " zwracamy bete = " + beta);
+					return beta;
+				}
 			}
-			return beta;
+			return alfa;
 		}
 	}
 	

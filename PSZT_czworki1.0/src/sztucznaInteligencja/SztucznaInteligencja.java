@@ -93,7 +93,7 @@ public class SztucznaInteligencja
 			
 			if(glebokosc%2 == 0)
 			{
-				//plansza.pisz();
+				plansza.pisz();
 				System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2));
 				return -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2);
 			}
@@ -103,13 +103,15 @@ public class SztucznaInteligencja
 				return ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 			}
 		}
-		if(kopiaPlanszy.sprawdzCzyWygrana(doKtorejKolumnyChcemyWrzucic, ktoryJestAI))
+		if(glebokosc %2 == 1)
 		{
-			if(glebokosc %2 == 1)
+			if(kopiaPlanszy.sprawdzCzyWygrana(doKtorejKolumnyChcemyWrzucic, ktoryJestAI))
 				return 300;
-			else
-				return -300;
 		}
+		else
+			if(kopiaPlanszy.sprawdzCzyWygrana(doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2))
+				return -300;
+	
 		// minimalizujemy
 		if(glebokosc %2 == 1)
 		{

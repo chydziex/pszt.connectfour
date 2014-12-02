@@ -298,9 +298,9 @@ public class Plansza implements Cloneable {
 	private int policzLewoSkosDol(Przynaleznosc gracz)
 	{
 		int licznik=0;
-		int kolumna = ( aktualnaWspolrzedna.getKolumna() + 1);
+		int kolumna = ( aktualnaWspolrzedna.getKolumna() - 1);
 		int wiersz = ( aktualnaWspolrzedna.getWiersz() + 1);
-		for(;kolumna<iloscKolumn && wiersz<iloscWierszy;++kolumna,++wiersz)
+		for(;kolumna>=0 && wiersz<iloscWierszy;--kolumna,++wiersz)
 			if(plansza[wiersz][kolumna].getZeton()==gracz)
 				++licznik;
 			else

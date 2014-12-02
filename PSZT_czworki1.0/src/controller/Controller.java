@@ -35,23 +35,29 @@ public class Controller implements Runnable
 		//wczytaj Ustawienia Gry Z Pakietu Obslugi Plikow
 		//wczytajUstawienia();
 		/*
+		 * testy heurystyki
 		Plansza plansza = new Plansza(Model.iloscWierszy, Model.iloscKolumn);
 		plansza.sprawdzCzyWygrana(3, 0);
 		plansza.sprawdzCzyWygrana(3, 0);
-		plansza.sprawdzCzyWygrana(0, 1);
-		//plansza.sprawdzCzyWygrana(2, 0);
-		//plansza.sprawdzCzyWygrana(1, 0);
+		plansza.sprawdzCzyWygrana(3, 0);
+		plansza.sprawdzCzyWygrana(2, 1);
+		plansza.sprawdzCzyWygrana(2, 0);
+		plansza.sprawdzCzyWygrana(2, 1);
+		plansza.sprawdzCzyWygrana(1, 0);
+		plansza.sprawdzCzyWygrana(1, 1);
+		//plansza.sprawdzCzyWygrana(0, 1);
 		
 		plansza.pisz();
 		
 		Heurystyka heu = new HeurystykaMaxDl(Przynaleznosc.GRACZ1);
 		HeurystykaZWaga heuzw= new HeurystykaZWaga(heu, 1);
 		System.out.println();
-		System.out.println("Heurystyka: " + heu.getWartosc(plansza, 2, 0));
-		
+		System.out.println("Heurystyka: " + heu.getWartosc(plansza, 3, 1));
 		*/
-		//dobre
+	
 		
+		
+		//dobre
 		try {
 			nowaGra();
 		} catch (InterruptedException e) {

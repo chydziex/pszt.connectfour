@@ -33,6 +33,7 @@ public class SztucznaInteligencja
 		
 		for(int i = 0; i < Model.iloscKolumn; i++)
 		{
+			System.out.println("Kolumna: " + indeksyKolumn[i]);
 			try
 			{
 				kopiaPlanszy = (Plansza) plansza.clone();
@@ -59,13 +60,13 @@ public class SztucznaInteligencja
 		return maxKolumna;
 	}
 	
-	public double ocenWezel(final Plansza plansza, int doKtorejKolumnyChcemyWrzucic)
+	public double ocenWezel(final Plansza plansza, int doKtorejKolumnyChcemyWrzucic, int ktoryGracz)
 	{
 		double ocena = 0;
 		if(mojeHeurystyki == null)
 			return 0;
 		for(HeurystykaZWaga heurystyka : mojeHeurystyki)
-			ocena += heurystyka.getWartosc(plansza, doKtorejKolumnyChcemyWrzucic);
+			ocena += heurystyka.getWartosc(plansza, doKtorejKolumnyChcemyWrzucic, ktoryGracz);
 		return ocena;
 	}
 	
@@ -81,8 +82,17 @@ public class SztucznaInteligencja
 		Plansza kopiaPlanszy = null;
 		if(glebokosc == glebokoscDrzewa)
 		{
-			System.out.println("Ocena: " + ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic));
-			return ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic);
+			
+			if(glebokosc%2 == 0)
+			{
+				System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2));
+				return -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2);
+			}
+			else
+			{
+				System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI));
+				return ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
+			}
 		}
 		// jesli teraz jest nasz ruch
 		if(glebokosc %2 == 1)
@@ -129,7 +139,7 @@ public class SztucznaInteligencja
 				}
 				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
 					continue;
-				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
+				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], (ktoryJestAI + 1)%2 );
 				temp = alfaBeta(kopiaPlanszy, indeksyKolumn[i], glebokosc + 1, alfa, beta);
 				if(temp < beta)
 					beta = temp;

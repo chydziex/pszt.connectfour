@@ -18,12 +18,12 @@ abstract public class Heurystyka
 	}
 	
 	/** Zwraca wartosc ruchu/stanu gry bez uwzglednienia wagi. */
-	public int getWartosc(final Plansza makietaRuchu, int kolumna)
+	public int getWartosc(final Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
-		return obliczanieWartosci(makietaRuchu, kolumna);
+		return obliczanieWartosci(makietaRuchu, kolumna, ktoryGracz);
 	}
 	
 	/** Oblicza wartosc ruchu/stanu gry bez uwzglednienia wagi danej heurystyki. */
-	abstract protected int obliczanieWartosci(final Plansza makietaRuchu, int kolumna);
+	abstract protected int obliczanieWartosci(final Plansza makietaRuchu, int kolumna, int ktoryGracz);
 	
 }

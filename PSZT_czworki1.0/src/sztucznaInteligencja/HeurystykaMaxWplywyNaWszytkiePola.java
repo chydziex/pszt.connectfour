@@ -10,7 +10,7 @@ public class HeurystykaMaxWplywyNaWszytkiePola extends Heurystyka {
 		// TODO Auto-generated constructor stub
 	}
 
-	protected int obliczanieWartosci(Plansza makietaRuchu, int kolumna)
+	protected int obliczanieWartosci(Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
 		Ciagi mojCiag = makietaRuchu.sasiednieCiagi(AI, kolumna);
 		Ciagi ciagPrzeciwnika = makietaRuchu.sasiednieCiagi(przeciwnik, kolumna);

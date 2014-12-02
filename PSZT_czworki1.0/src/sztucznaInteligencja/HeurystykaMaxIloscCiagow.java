@@ -11,7 +11,7 @@ public class HeurystykaMaxIloscCiagow extends Heurystyka {
 	}
 	
 	
-	protected int obliczanieWartosci(final Plansza makietaRuchu, int kolumna)
+	protected int obliczanieWartosci(final Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
 		Ciagi mojCiag = makietaRuchu.sasiednieCiagi(AI, kolumna);
 		//if sprawdzaj¹cy czy mo¿na utworzyæ czwórkê

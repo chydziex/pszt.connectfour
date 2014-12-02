@@ -85,33 +85,34 @@ public class SztucznaInteligencja
 			
 			if(glebokosc%2 == 0)
 			{
+				//plansza.pisz();
 				System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2));
 				return -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2);
 			}
 			else
 			{
-				System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI));
+				System.out.println("Ocena: " + ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI));
 				return ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 			}
 		}
 		// jesli teraz jest nasz ruch
 		if(glebokosc %2 == 1)
 		{
+			try
+			{
+				kopiaPlanszy = (Plansza) plansza.clone();
+				
+			}catch (CloneNotSupportedException e)
+			{
+				e.printStackTrace();
+			}
+			kopiaPlanszy.sprawdzCzyWygrana(doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 			for(int i = 0; i < Model.iloscKolumn; i++)
 			{
-				try
-				{
-					kopiaPlanszy = (Plansza) plansza.clone();
-					
-				}catch (CloneNotSupportedException e)
-				{
-					e.printStackTrace();
-				}
 				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
 					continue;
-				kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI);
 				temp = alfaBeta(kopiaPlanszy, indeksyKolumn[i], glebokosc + 1, alfa, beta);
-				System.out.println("Temp " + i + ": " + temp );
+				System.out.println("Temp " + indeksyKolumn[i] + ": " + temp );
 				if(temp > alfa)
 				{
 					alfa = temp;

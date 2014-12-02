@@ -15,6 +15,7 @@ import sztucznaInteligencja.Heurystyka;
 import sztucznaInteligencja.HeurystykaMaxDl;
 import sztucznaInteligencja.HeurystykaMaxIloscCiagow;
 import sztucznaInteligencja.HeurystykaMaxWplywuNaSwojePola;
+import sztucznaInteligencja.HeurystykaMaxWplywyNaWszytkiePola;
 import sztucznaInteligencja.HeurystykaZWaga;
 import sztucznaInteligencja.SztucznaInteligencja;
 import model.Tryby;
@@ -34,25 +35,25 @@ public class Controller implements Runnable
 		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
 		//wczytaj Ustawienia Gry Z Pakietu Obslugi Plikow
 		//wczytajUstawienia();
+		
 		/*
-		 * testy heurystyki
+		//testy heurystyki
 		Plansza plansza = new Plansza(Model.iloscWierszy, Model.iloscKolumn);
+		plansza.sprawdzCzyWygrana(6, 0);
+		plansza.sprawdzCzyWygrana(5, 0);
 		plansza.sprawdzCzyWygrana(3, 0);
-		plansza.sprawdzCzyWygrana(3, 0);
-		plansza.sprawdzCzyWygrana(3, 0);
-		plansza.sprawdzCzyWygrana(2, 1);
+		/*plansza.sprawdzCzyWygrana(2, 1);
 		plansza.sprawdzCzyWygrana(2, 0);
 		plansza.sprawdzCzyWygrana(2, 1);
 		plansza.sprawdzCzyWygrana(1, 0);
 		plansza.sprawdzCzyWygrana(1, 1);
-		//plansza.sprawdzCzyWygrana(0, 1);
 		
 		plansza.pisz();
 		
-		Heurystyka heu = new HeurystykaMaxDl(Przynaleznosc.GRACZ1);
+		Heurystyka heu = new HeurystykaMaxIloscCiagow(Przynaleznosc.GRACZ1);
 		HeurystykaZWaga heuzw= new HeurystykaZWaga(heu, 1);
 		System.out.println();
-		System.out.println("Heurystyka: " + heu.getWartosc(plansza, 3, 1));
+		System.out.println("Heurystyka: " + heu.getWartosc(plansza, 4, 1));
 		*/
 	
 		
@@ -64,9 +65,6 @@ public class Controller implements Runnable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 		
 		
 		
@@ -218,7 +216,7 @@ public class Controller implements Runnable
 	{
 		//TO MODIFY
 		int ktoryKomputer = 0;
-		int glebokoscDrzewa = 2;
+		int glebokoscDrzewa = 5;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
 		if(czyWGrzeKomputer())
@@ -226,6 +224,8 @@ public class Controller implements Runnable
 			//stworzyc wektor heurystyk z wagami i przekazac
 			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
 			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
+			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaWszytkiePola(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
 			AI = new SztucznaInteligencja(vectorHeurystyk, ktoryKomputer, glebokoscDrzewa);
 		}
 		

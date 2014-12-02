@@ -93,12 +93,13 @@ public class SztucznaInteligencja
 			
 			if(glebokosc%2 == 0)
 			{
-				plansza.pisz();
+				//plansza.pisz();
 				System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2));
 				return -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, (ktoryJestAI + 1)%2);
 			}
 			else
 			{
+				//plansza.pisz();
 				System.out.println("Ocena: " + ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI));
 				return ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 			}

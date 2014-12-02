@@ -23,7 +23,15 @@ public class HeurystykaMaxDl extends Heurystyka {
 		Ciagi mojCiag = makietaRuchu.sasiednieCiagi(gracz, kolumna);
 		
 		//if sprawdzaj¹cy czy mo¿na utworzyæ czwórkê:
-		
+		/*
+		System.out.println("Lewo skos dol: " + mojCiag.getLewoSkosDol());
+		System.out.println("Lewo skos gora: " + mojCiag.getLewoSkosGora());
+		System.out.println("Pion: " + mojCiag.getPion());
+		System.out.println("Lewo poziom: " + mojCiag.getPoziomLewo());
+		System.out.println("Prawo poziom: " + mojCiag.getPoziomPrawo());
+		System.out.println("Prawo skos dol: " + mojCiag.getPrawoSkosDol());
+		System.out.println("Prawo skos gora: " + mojCiag.getPrawoSkosGora());
+		*/
 		if((mojCiag.getLewoSkosDol()+mojCiag.getLewoSkosGora()+1)>=4||(mojCiag.getPrawoSkosDol()+mojCiag.getPrawoSkosGora()+1)>=4||(mojCiag.getPion()+1)>=4||(mojCiag.getPoziomLewo()+mojCiag.getPoziomPrawo()+1)>=4)
 			return 100;
 		else

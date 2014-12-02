@@ -88,7 +88,6 @@ public class SztucznaInteligencja
 		{
 			e.printStackTrace();
 		}
-		kopiaPlanszy.sprawdzCzyWygrana(doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 		if(glebokosc == glebokoscDrzewa)
 		{
 			
@@ -103,6 +102,13 @@ public class SztucznaInteligencja
 				System.out.println("Ocena: " + ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI));
 				return ocenWezel(plansza, doKtorejKolumnyChcemyWrzucic, ktoryJestAI);
 			}
+		}
+		if(kopiaPlanszy.sprawdzCzyWygrana(doKtorejKolumnyChcemyWrzucic, ktoryJestAI))
+		{
+			if(glebokosc %2 == 1)
+				return 300;
+			else
+				return -300;
 		}
 		// minimalizujemy
 		if(glebokosc %2 == 1)

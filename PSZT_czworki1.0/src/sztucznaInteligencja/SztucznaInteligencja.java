@@ -279,6 +279,7 @@ public class SztucznaInteligencja
 							if(kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI))
 							{
 								dzieci[i] = new Stan(300);
+								ocena = 300;
 								System.out.println("Wygrana, zamykam!");
 								return;
 							}
@@ -316,6 +317,7 @@ public class SztucznaInteligencja
 							if(kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], (ktoryJestAI + 1)%2))
 							{
 								dzieci[i] = new Stan(-300);
+								ocena = -300;
 								System.out.println("Przegrana, zamykam!");
 								return;
 							}

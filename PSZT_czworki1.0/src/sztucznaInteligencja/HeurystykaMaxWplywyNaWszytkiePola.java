@@ -5,11 +5,6 @@ import model.Przynaleznosc;
 
 public class HeurystykaMaxWplywyNaWszytkiePola extends Heurystyka {
 
-	public HeurystykaMaxWplywyNaWszytkiePola(Przynaleznosc AI) {
-		super(AI);
-		// TODO Auto-generated constructor stub
-	}
-
 	protected int obliczanieWartosci(Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
 		Przynaleznosc gracz = null, przeciwnik = null;

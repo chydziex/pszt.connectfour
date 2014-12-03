@@ -25,7 +25,14 @@ public class SztucznaInteligencja
 	
 	public int wybierzKolumne(final Plansza plansza)
 	{
-		//TODO		
+		//TODO
+		
+		drzewoGry = new DrzewoGry(plansza);
+		System.out.println("WYBIERAM KOLUMNE " + drzewoGry.ktoraKolumnaRuch());
+		return drzewoGry.ktoraKolumnaRuch();
+		
+		
+		/* wersja bez drzewa
 		Vector<Integer> vectorNajlepszychKolumn= new Vector<Integer>();
 		int najlepszaKolumna = 0, maxKolumna = -1;
 		double aktualnaWartoscWezla, maxWartoscWezla = Double.NEGATIVE_INFINITY, alfa = Double.NEGATIVE_INFINITY, beta = Double.POSITIVE_INFINITY;
@@ -58,6 +65,7 @@ public class SztucznaInteligencja
 		}
 		//int indeks = (rand.nextInt())%(vectorNajlepszychKolumn.size());
 		return maxKolumna;
+		*/
 	}
 	
 	public double ocenWezel(final Plansza plansza, int doKtorejKolumnyChcemyWrzucic, int ktoryGracz)
@@ -77,7 +85,7 @@ public class SztucznaInteligencja
 	private double alfaBeta(final Plansza plansza, int doKtorejKolumnyChcemyWrzucic, int glebokosc, double alfa, double beta)
 	{
 		// TODO
-		System.out.println(glebokosc);
+		System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucic);
 		double temp;
 		Plansza kopiaPlanszy = null;
 		try
@@ -90,7 +98,6 @@ public class SztucznaInteligencja
 		}
 		if(glebokosc == glebokoscDrzewa)
 		{
-			
 			if(glebokosc%2 == 0)
 			{
 				//plansza.pisz();
@@ -121,7 +128,7 @@ public class SztucznaInteligencja
 				if(!kopiaPlanszy.czyRuchJestDozwolony(indeksyKolumn[i]))
 					continue;
 				temp = alfaBeta(kopiaPlanszy, indeksyKolumn[i], glebokosc + 1, alfa, beta);
-				System.out.println("Temp " + indeksyKolumn[i] + ": " + temp );
+				//System.out.println("Temp " + indeksyKolumn[i] + ": " + temp );
 				
 			
 				if(temp < beta)
@@ -170,28 +177,31 @@ public class SztucznaInteligencja
 	private final Vector<HeurystykaZWaga> mojeHeurystyki;
 	private final int[] indeksyKolumn = {3, 4, 2, 5, 1, 6, 0};
 	private Random rand = new Random();
-	
-	
-	//private DrzewoGry drzewoGry;
+	private DrzewoGry drzewoGry;
 	
 	class DrzewoGry
 	{
 		/** korzen drzewa.*/
 		private Stan aktualnyStan;
-		private final int glebokoscDrzewa;
-		//private final Plansza oryginalnaPlansza; Potrzebne?
+		private final Plansza oryginalnaPlansza;
 				
 		/**
 		 * Konstruktor Drzewa gry. Do stworzenia drzewa wykorzystuje algorytm MinMax z przycinaniem alfa - beta.
+		 * GLEBOKOSC LICZYMY OD 1!
+		 * 
 		 * @param heurystyki - wektor heurystyk z wagami (wagi w srodku heurystyk)
-		 * @param glebokoscD - poziom drzewa, > 0
+		 * @param glebokoscD - poziom drzewa, > 1
 		 * @param AI - Przynaleznosc, czyli tak naprawde ktore zetony sa AI.
 		 */
-		public DrzewoGry(int glebokoscD, final Plansza oryginalnaPlansza, Przynaleznosc AI)
+		public DrzewoGry(final Plansza orygPlansza)
 		{
-			glebokoscDrzewa = glebokoscD;
-			//do Stanu przekazujemy kopie?
-			aktualnyStan = new Stan(oryginalnaPlansza, 0);
+			oryginalnaPlansza = orygPlansza;
+			aktualnyStan = new Stan(oryginalnaPlansza, 1, -1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+		}
+		
+		public void pisz()
+		{
+			// TODO
 		}
 		
 		/** Metoda zwraca indeks kolumny, do ktorej AI chce wrzucic zeton.
@@ -201,38 +211,131 @@ public class SztucznaInteligencja
 		 */
 		public int ktoraKolumnaRuch()
 		{
-			//TODO
-			return 0;
+			System.out.println("Wartosc root: " + aktualnyStan.getOcena());
+			for(int i = 0; i < Model.iloscKolumn; i++)
+			{
+				if(aktualnyStan.dzieci[i] != null)
+					System.out.println("Dziecko " + i + " Wartosc: " + aktualnyStan.dzieci[i].getOcena());
+				if(aktualnyStan.dzieci[i] != null && (aktualnyStan.dzieci[i].getOcena() >= aktualnyStan.getOcena()))
+					return indeksyKolumn[i];
+			}
+			return -1;
 		}
 		
 		class Stan
 		{
-			private int ocena;
-			private Plansza makieta;
-			private Stan[] dzieci;
+			private double ocena;
+			//private Plansza makieta;
+			private Stan[] dzieci = new Stan[7];
+			
+			public Stan(double o)
+			{
+				ocena = o;
+			}
 			
 			/** Tworzy sie rekurencyjnie.
 			 * glebokosc parzysta - my wybieramy ruch, nieparzysta - przeciwnik.
 			 */
-			public Stan(final Plansza makieta, int glebokosc)
+			public Stan(final Plansza plansza, int glebokosc, int doKtorejKolumnyChcemyWrzucicZeton, double alfa, double beta)
 			{
-				if(glebokosc == glebokoscDrzewa)
-					ocena = getOcena();
+				Plansza kopiaPlanszy = null;
 				
-				/*galezie = new Stan[7];
-				for(int i=0;i<7;++i)
+				if(glebokosc == glebokoscDrzewa)
 				{
-					if(doDna==0)
-						galezie[i]=null;
+					System.out.print("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " ");
+					//ruch AI
+					if(glebokosc%2 == 0)
+					{
+						//plansza.pisz();
+						System.out.println("Ocena: " + ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, ktoryJestAI));
+						ocena =  ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, ktoryJestAI);
+					}
+					//ruch przeciwnika
 					else
 					{
-						galezie[i]= new Stan(doDna -1);
-						//dodac makiete - kopie, a nie referencje
+						//plansza.pisz();
+						System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, (ktoryJestAI + 1)%2));
+						ocena = -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, (ktoryJestAI + 1)%2);
 					}
-				}*/
+					return;
+				}
+				
+				// maksymalizujemy
+				else if(glebokosc%2 == 1)
+				{
+					System.out.println("Glebokosc: " + glebokosc + " wrzucilismy do: " + doKtorejKolumnyChcemyWrzucicZeton);
+					for(int i = 0; i < Model.iloscKolumn; i++)
+					{
+						try
+						{
+							kopiaPlanszy = (Plansza) plansza.clone();	
+						}catch (CloneNotSupportedException e)
+						{
+							e.printStackTrace();
+						}
+						if(!plansza.czyRuchJestDozwolony(indeksyKolumn[i]))
+							continue;
+						if(glebokosc + 1 < glebokoscDrzewa)									// jesli nie przedostania gleobokosc, to nie wrzucamy, bo potem bedzie ocena
+							if(kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI))
+							{
+								dzieci[i] = new Stan(300);
+								System.out.println("Wygrana, zamykam!");
+								return;
+							}
+						
+						dzieci[i] = new Stan(kopiaPlanszy, glebokosc + 1, indeksyKolumn[i], alfa, beta);
+						if(dzieci[i].getOcena() > alfa)
+							alfa = dzieci[i].getOcena();
+						if(alfa >= beta)
+						{
+							ocena = beta;
+							System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena + " PO CIECIU");
+							return;
+						}
+				
+					}
+					ocena = alfa;
+					System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena);
+				}
+				// minimalizujemy
+				else
+				{
+					System.out.println("Glebokosc: " + glebokosc + " wrzucilismy do: " + doKtorejKolumnyChcemyWrzucicZeton);
+					for(int i = 0; i < Model.iloscKolumn; i++)
+					{
+						try
+						{
+							kopiaPlanszy = (Plansza) plansza.clone();	
+						}catch (CloneNotSupportedException e)
+						{
+							e.printStackTrace();
+						}
+						if(!plansza.czyRuchJestDozwolony(indeksyKolumn[i]))
+							continue;
+						if(glebokosc + 1 < glebokoscDrzewa)									// jesli nie przedostania gleobokosc, to nie wrzucamy, bo potem bedzie ocena
+							if(kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], (ktoryJestAI + 1)%2))
+							{
+								dzieci[i] = new Stan(-300);
+								System.out.println("Przegrana, zamykam!");
+								return;
+							}
+						
+						dzieci[i] = new Stan(kopiaPlanszy, glebokosc + 1, indeksyKolumn[i], alfa, beta);
+						if(dzieci[i].getOcena() < beta)
+							beta = dzieci[i].getOcena();
+						if(alfa >= beta)
+						{
+							ocena = alfa;
+							System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena + " PO CIECIU");
+							return;
+						}
+					}
+					ocena = beta;
+					System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena);
+				}
 			}
 			
-			public int getOcena()
+			public double getOcena()
 			{
 				return ocena;
 			}

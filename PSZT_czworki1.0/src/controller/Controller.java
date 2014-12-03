@@ -133,6 +133,7 @@ public class Controller implements Runnable
 								System.out.println("Dobrze");
 								wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
 								System.out.println("----- KONIEC RUCHU KOMPA -----");
+								System.out.println("------------------------------");
 							} catch(WyjatekRuchNiedozwolony e)
 							{
 								System.out.println("Blad algorytmu! Ruch niedozwolony!");
@@ -223,8 +224,8 @@ public class Controller implements Runnable
 		{	
 			//stworzyc wektor heurystyk z wagami i przekazac
 			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 1));
+			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
 			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaWszytkiePola(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
 			AI = new SztucznaInteligencja(vectorHeurystyk, ktoryKomputer, glebokoscDrzewa);
 		}

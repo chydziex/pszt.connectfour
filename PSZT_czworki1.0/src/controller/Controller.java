@@ -217,16 +217,16 @@ public class Controller implements Runnable
 	{
 		//TO MODIFY
 		int ktoryKomputer = 0;
-		int glebokoscDrzewa = 5;
+		int glebokoscDrzewa = 8;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
 		if(czyWGrzeKomputer())
 		{	
 			//stworzyc wektor heurystyk z wagami i przekazac
 			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 1));
-			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
-			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaWszytkiePola(wyznaczPrzynaleznosc(ktoryKomputer)), 1));
+			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 1));
+			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 1));
 			AI = new SztucznaInteligencja(vectorHeurystyk, ktoryKomputer, glebokoscDrzewa);
 		}
 		

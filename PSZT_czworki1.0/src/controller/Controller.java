@@ -15,6 +15,7 @@ import sztucznaInteligencja.Heurystyka;
 import sztucznaInteligencja.HeurystykaMaxDl;
 import sztucznaInteligencja.HeurystykaMaxIloscCiagow;
 import sztucznaInteligencja.HeurystykaMaxWplywuNaSwojePola;
+import sztucznaInteligencja.HeurystykaMaxWplywyNaPolaPrzeciwnika;
 import sztucznaInteligencja.HeurystykaMaxWplywyNaWszytkiePola;
 import sztucznaInteligencja.HeurystykaZWaga;
 import sztucznaInteligencja.SztucznaInteligencja;
@@ -126,12 +127,16 @@ public class Controller implements Runnable
 							sprzatnijKolejke();				
 						ktoryGracz = model.ktoryGracz();
 						
+						System.out.println(model.czyjRuch());
 						if(model.czyjRuch() == RodzajeGraczy.KOMPUTER)
 						{
 							try
 							{
 								System.out.println("Dobrze");
-								wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
+								if(ktoryGracz == AI.getKtoryJestAI())
+									wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
+								else
+									wspolrzedne = model.wrzucZeton(AI1.wybierzKolumne(model.getPlansza()));
 								System.out.println("----- KONIEC RUCHU KOMPA -----");
 								System.out.println("------------------------------");
 							} catch(WyjatekRuchNiedozwolony e)
@@ -217,17 +222,27 @@ public class Controller implements Runnable
 	{
 		//TO MODIFY
 		int ktoryKomputer = 0;
-		int glebokoscDrzewa = 8;
+		int glebokoscDrzewa = 11;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
 		if(czyWGrzeKomputer())
 		{	
 			//stworzyc wektor heurystyk z wagami i przekazac
 			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
-			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 1));
-			//vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
+			Vector<HeurystykaZWaga> vectorHeurystyk1 = new Vector<HeurystykaZWaga>();
+			
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 3));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
 			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 1));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), 3));
+			
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 1));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 1));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), 1));
+
 			AI = new SztucznaInteligencja(vectorHeurystyk, ktoryKomputer, glebokoscDrzewa);
+			AI1 = new SztucznaInteligencja(vectorHeurystyk1, (ktoryKomputer + 1)%2, glebokoscDrzewa);
 		}
 		
 		inicjalizujModel();
@@ -311,6 +326,8 @@ public class Controller implements Runnable
 	private final Model model = new Model();
 	
 	private SztucznaInteligencja AI = null;
+	//////////////
+	private SztucznaInteligencja AI1 = null;
 	
 	/** Referencja na widok. */
 	private final View view;

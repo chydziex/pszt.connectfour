@@ -18,7 +18,7 @@ public class HeurystykaMaxIloscCiagow extends Heurystyka {
 		Ciagi mojCiag = makietaRuchu.sasiednieCiagi(gracz, kolumna);
 		
 		
-		show(mojCiag);
+		//show(mojCiag);
 		
 		//if sprawdzaj¹cy czy mo¿na utworzyæ czwórkê
 		if((mojCiag.getLewoSkosDol()+mojCiag.getLewoSkosGora()+1)>=4||(mojCiag.getPrawoSkosDol()+mojCiag.getPrawoSkosGora()+1)>=4||(mojCiag.getPion()+1)>=4||(mojCiag.getPoziomLewo()+mojCiag.getPoziomPrawo()+1)>=4)

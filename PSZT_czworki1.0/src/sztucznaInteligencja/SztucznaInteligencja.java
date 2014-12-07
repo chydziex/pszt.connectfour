@@ -242,19 +242,19 @@ public class SztucznaInteligencja
 				
 				if(glebokosc == glebokoscDrzewa)
 				{
-					System.out.print("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " ");
+					//System.out.print("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " ");
 					//ruch AI
 					if(glebokosc%2 == 0)
 					{
 						//plansza.pisz();
-						System.out.println("Ocena: " + ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, ktoryJestAI));
+						//System.out.println("Ocena: " + ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, ktoryJestAI));
 						ocena =  ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, ktoryJestAI);
 					}
 					//ruch przeciwnika
 					else
 					{
 						//plansza.pisz();
-						System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, (ktoryJestAI + 1)%2));
+						//System.out.println("Ocena: " + -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, (ktoryJestAI + 1)%2));
 						ocena = -ocenWezel(plansza, doKtorejKolumnyChcemyWrzucicZeton, (ktoryJestAI + 1)%2);
 					}
 					return;
@@ -263,7 +263,7 @@ public class SztucznaInteligencja
 				// maksymalizujemy
 				else if(glebokosc%2 == 1)
 				{
-					System.out.println("Glebokosc: " + glebokosc + " wrzucilismy do: " + doKtorejKolumnyChcemyWrzucicZeton);
+					//System.out.println("Glebokosc: " + glebokosc + " wrzucilismy do: " + doKtorejKolumnyChcemyWrzucicZeton);
 					for(int i = 0; i < Model.iloscKolumn; i++)
 					{
 						try
@@ -280,7 +280,7 @@ public class SztucznaInteligencja
 							{
 								dzieci[i] = new Stan(300);
 								ocena = 300;
-								System.out.println("Wygrana, zamykam!");
+								//System.out.println("Glebokosc: " + glebokosc + " Kolumna do wrzutu: " + indeksyKolumn[i] + " Wygrana, zamykam!");
 								return;
 							}
 						
@@ -290,18 +290,18 @@ public class SztucznaInteligencja
 						if(alfa >= beta)
 						{
 							ocena = beta;
-							System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena + " PO CIECIU");
+							//System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena + " PO CIECIU");
 							return;
 						}
 				
 					}
 					ocena = alfa;
-					System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena);
+					//System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena);
 				}
 				// minimalizujemy
 				else
 				{
-					System.out.println("Glebokosc: " + glebokosc + " wrzucilismy do: " + doKtorejKolumnyChcemyWrzucicZeton);
+					//System.out.println("Glebokosc: " + glebokosc + " wrzucilismy do: " + doKtorejKolumnyChcemyWrzucicZeton);
 					for(int i = 0; i < Model.iloscKolumn; i++)
 					{
 						try
@@ -318,7 +318,7 @@ public class SztucznaInteligencja
 							{
 								dzieci[i] = new Stan(-300);
 								ocena = -300;
-								System.out.println("Przegrana, zamykam!");
+							//	System.out.println("Glebokosc: " + glebokosc + " Kolumna do wrzutu: " + indeksyKolumn[i] + " Przegrana, zamykam!");
 								return;
 							}
 						
@@ -328,12 +328,12 @@ public class SztucznaInteligencja
 						if(alfa >= beta)
 						{
 							ocena = alfa;
-							System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena + " PO CIECIU");
+							//System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena + " PO CIECIU");
 							return;
 						}
 					}
 					ocena = beta;
-					System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena);
+					//System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena);
 				}
 			}
 			

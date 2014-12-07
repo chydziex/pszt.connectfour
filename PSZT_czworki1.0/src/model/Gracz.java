@@ -16,6 +16,10 @@ public class Gracz {
 	{
 		trybGry=tryb;
 		ktoryGracz=0;
+		if(trybGry.equals(Tryby.AIvsAI))
+			aktualnyGracz=RodzajeGraczy.KOMPUTER;
+		else if(trybGry.equals(Tryby.CZLOWIEKvsCZLOWIEK))
+			aktualnyGracz=RodzajeGraczy.CZLOWIEK;
 	}
 	
 	/**Geter do zmiennej trybGry*/

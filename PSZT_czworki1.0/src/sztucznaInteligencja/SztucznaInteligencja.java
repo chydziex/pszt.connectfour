@@ -279,7 +279,7 @@ public class SztucznaInteligencja
 							if(kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], ktoryJestAI))
 							{
 								dzieci[i] = new Stan(300);
-								ocena = 300;
+								ocena = alfa > 300 ? alfa : 300;
 								//System.out.println("Glebokosc: " + glebokosc + " Kolumna do wrzutu: " + indeksyKolumn[i] + " Wygrana, zamykam!");
 								return;
 							}
@@ -317,8 +317,8 @@ public class SztucznaInteligencja
 							if(kopiaPlanszy.sprawdzCzyWygrana(indeksyKolumn[i], (ktoryJestAI + 1)%2))
 							{
 								dzieci[i] = new Stan(-300);
-								ocena = -300;
-							//	System.out.println("Glebokosc: " + glebokosc + " Kolumna do wrzutu: " + indeksyKolumn[i] + " Przegrana, zamykam!");
+								ocena = beta < -300 ? beta : -300;
+								//System.out.println("Glebokosc: " + glebokosc + " Kolumna do wrzutu: " + indeksyKolumn[i] + " Przegrana, zamykam!");
 								return;
 							}
 						

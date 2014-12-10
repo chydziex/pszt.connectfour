@@ -222,7 +222,7 @@ public class Controller implements Runnable
 	{
 		//TO MODIFY
 		int ktoryKomputer = 0;
-		int glebokoscDrzewa = 11;
+		int glebokoscDrzewa = 10;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
 		if(czyWGrzeKomputer())

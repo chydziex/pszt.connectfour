@@ -1,0 +1,80 @@
+2.11.2014
+ai1	ai2
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+2.11.2014
+3010
+2.11.2014
+ai1	ai2
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+2.11.2014
+3053
+2.11.2014
+ai1	ai2
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+2.11.2014
+3006
+2.11.2014
+ai1	ai2
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+2.11.2014
+3007
+2.11.2014
+ai1	ai2
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+ai1	ai2	4	remis	4
+ai1	ai2	4	remis	5
+ai1	ai2	4	remis	1
+ai1	ai2	4	remis	2
+ai1	ai2	4	remis	3
+2.11.2014
+3005

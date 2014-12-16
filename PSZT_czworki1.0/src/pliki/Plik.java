@@ -19,7 +19,7 @@ public abstract class Plik {
 			return false;
 	}
 	
-	public boolean stworz() throws IOException{
+	public boolean stworzNowy() throws IOException{
 		
 		return plik.createNewFile();
 		

@@ -1,8 +1,8 @@
 package pliki;
 
-public class plikKomunikacji extends Plik {
+public class PlikKomunikacji extends Plik {
 
-	public plikKomunikacji(String nazwa) {
+	public PlikKomunikacji(String nazwa) {
 		super(nazwa);
 		// TODO Auto-generated constructor stub
 	}

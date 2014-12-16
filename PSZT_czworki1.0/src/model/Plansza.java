@@ -16,7 +16,7 @@ public class Plansza implements Cloneable {
 	 * @param ileWierszy
 	 * @param ileKolumn
 	 */
-	Plansza(int ileWierszy, int ileKolumn)
+	public Plansza(int ileWierszy, int ileKolumn)
 	{
 		licznik=0;
 		iloscWierszy=ileWierszy;
@@ -118,13 +118,13 @@ public class Plansza implements Cloneable {
 		Ciagi paczka= new Ciagi(gracz);
 		wyliczAktualnaWspolrzedna( kolumna);
 		
-		paczka.setPion(policzPion(gracz));
+		paczka.setPion(policzPion(gracz) - 1);
 		paczka.setPoziomLewo(policzPoziomLewo(gracz));
 		paczka.setPoziomPrawo(policzPoziomPrawo(gracz));
 		paczka.setLewoSkosGora(policzLewoSkosGora(gracz));
 		paczka.setLewoSkosDol(policzLewoSkosDol(gracz));
 		paczka.setPrawoSkosGora(policzPrawoSkosGora(gracz));
-		paczka.setLewoSkosDol(policzLewoSkosDol(gracz));
+		paczka.setPrawoSkosDol(policzPrawoSkosDol(gracz));
 		
 		return paczka;
 	}

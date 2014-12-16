@@ -1,4 +1,5 @@
 package controller;
+import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -7,8 +8,16 @@ import wiadomosc.Wiadomosc;
 import wiadomosc.WiadomoscRuch;
 import model.Model;
 import model.Plansza;
+import model.Przynaleznosc;
 import model.RodzajeGraczy;
 import sytuacjeWyjatkowe.*;
+import sztucznaInteligencja.Heurystyka;
+import sztucznaInteligencja.HeurystykaMaxDl;
+import sztucznaInteligencja.HeurystykaMaxIloscCiagow;
+import sztucznaInteligencja.HeurystykaMaxWplywuNaSwojePola;
+import sztucznaInteligencja.HeurystykaMaxWplywyNaPolaPrzeciwnika;
+import sztucznaInteligencja.HeurystykaMaxWplywyNaWszytkiePola;
+import sztucznaInteligencja.HeurystykaZWaga;
 import sztucznaInteligencja.SztucznaInteligencja;
 import model.Tryby;
 import model.Wspolrzedne;
@@ -27,6 +36,38 @@ public class Controller implements Runnable
 		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
 		//wczytaj Ustawienia Gry Z Pakietu Obslugi Plikow
 		//wczytajUstawienia();
+		
+		/*
+		//testy heurystyki
+		Plansza plansza = new Plansza(Model.iloscWierszy, Model.iloscKolumn);
+		plansza.sprawdzCzyWygrana(6, 0);
+		plansza.sprawdzCzyWygrana(5, 0);
+		plansza.sprawdzCzyWygrana(3, 0);
+		/*plansza.sprawdzCzyWygrana(2, 1);
+		plansza.sprawdzCzyWygrana(2, 0);
+		plansza.sprawdzCzyWygrana(2, 1);
+		plansza.sprawdzCzyWygrana(1, 0);
+		plansza.sprawdzCzyWygrana(1, 1);
+		
+		plansza.pisz();
+		
+		Heurystyka heu = new HeurystykaMaxIloscCiagow(Przynaleznosc.GRACZ1);
+		HeurystykaZWaga heuzw= new HeurystykaZWaga(heu, 1);
+		System.out.println();
+		System.out.println("Heurystyka: " + heu.getWartosc(plansza, 4, 1));
+		*/
+	
+		
+		
+		//dobre
+		try {
+			nowaGra();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 		/**
 		 * testowanko klonowania
@@ -78,9 +119,6 @@ public class Controller implements Runnable
 		Wspolrzedne wspolrzedne = null;
 		try
 		{
-			KONIEC_GRY: for(;;)
-			{
-				nowaGra();
 				try
 				{
 					NEW_GAME: for(;;)
@@ -89,17 +127,23 @@ public class Controller implements Runnable
 							sprzatnijKolejke();				
 						ktoryGracz = model.ktoryGracz();
 						
+						System.out.println(model.czyjRuch());
 						if(model.czyjRuch() == RodzajeGraczy.KOMPUTER)
 						{
 							try
 							{
 								System.out.println("Dobrze");
-								wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
+								if(ktoryGracz == AI.getKtoryJestAI())
+									wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
+								else
+									wspolrzedne = model.wrzucZeton(AI1.wybierzKolumne(model.getPlansza()));
+								System.out.println("----- KONIEC RUCHU KOMPA -----");
+								System.out.println("------------------------------");
 							} catch(WyjatekRuchNiedozwolony e)
 							{
 								System.out.println("Blad algorytmu! Ruch niedozwolony!");
 								e.printStackTrace();
-								break KONIEC_GRY;
+								break;
 							}
 						}
 						//ruch cz³owieka
@@ -147,38 +191,73 @@ public class Controller implements Runnable
 				}
 				catch(WyjatekWygrana e)
 				{
-					wygrana();
+					//wygrana();
 					view.aktualizacja(wspolrzedne, ktoryGracz);
+					System.out.println("Wygrana!");
 				}
 				finally
 				{
 					wyczyscKolejke();
 				}
-			}
 		} catch(InterruptedException e)
 		{}
 	}
 	
-	/** Funckaj wczytujaca informacje o konfiguracji dzialania programu jesli jest komputer. */
+	/** Funkcja wczytujaca informacje o konfiguracji dzialania programu jesli jest komputer. */
 	private void wczytajUstawienia()
 	{
 		//TODO
 	}
 	
+	/** Funkcja inicjalizujaca model: wysyla mu tryb gry i potrzebne informacje. */
+	private void inicjalizujModel()
+	{
+		if(wiadomosc.jakiTryb() == Tryby.AIvsCZLOWIEK)
+			model.nowaGra(wiadomosc.jakiTryb(), AI.getKtoryJestAI());
+		else
+			model.nowaGra(wiadomosc.jakiTryb());
+	}
+	
 	private void nowaGra() throws InterruptedException
 	{
 		//TO MODIFY
+		int ktoryKomputer = 0;
+		int glebokoscDrzewa = 10;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
-		//if(wiadomosc.jakiTryb() == Tryby.AIvsAI)
-			//model.nowaGra(wiadomosc.jakiTryb(), ktoryJestAI);
-		model.nowaGra(wiadomosc.jakiTryb());
 		if(czyWGrzeKomputer())
 		{	
-			AI = new SztucznaInteligencja(null, 0);
+			//stworzyc wektor heurystyk z wagami i przekazac
+			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
+			Vector<HeurystykaZWaga> vectorHeurystyk1 = new Vector<HeurystykaZWaga>();
+			
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 3));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 1));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), 3));
+			
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 1));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 1));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), 1));
+
+			AI = new SztucznaInteligencja(vectorHeurystyk, ktoryKomputer, glebokoscDrzewa);
+			AI1 = new SztucznaInteligencja(vectorHeurystyk1, (ktoryKomputer + 1)%2, glebokoscDrzewa);
 		}
+		
+		inicjalizujModel();
+		
 		view.wyswietlPanelZGra();
 		view.wylaczPanelWyboruGraczy();
+	}
+	
+	private Przynaleznosc wyznaczPrzynaleznosc(int ktoryGracz)
+	{
+		if(ktoryGracz == 0)
+			return Przynaleznosc.GRACZ1;
+		if(ktoryGracz == 1)
+			return Przynaleznosc.GRACZ2;
+		return null;
 	}
 	
 	/** Metoda obs³uguj¹ca sytuacjê koñca gry - remis.*/
@@ -229,7 +308,7 @@ public class Controller implements Runnable
 	/** Metoda sprawdzaj¹ca, czy w grze jest komputer: tryby Player vs CPU lub CPU vs CPU. Jeœli tak, zwraca true, w przeciwnym przypadku false. */
 	private boolean czyWGrzeKomputer()
 	{
-		if(model.getTrybGry() == Tryby.AIvsAI || model.getTrybGry() == Tryby.AIvsCZLOWIEK)
+		if(wiadomosc.jakiTryb() == Tryby.AIvsAI || wiadomosc.jakiTryb() == Tryby.AIvsCZLOWIEK)
 			return true;
 		else
 			return false;
@@ -247,6 +326,8 @@ public class Controller implements Runnable
 	private final Model model = new Model();
 	
 	private SztucznaInteligencja AI = null;
+	//////////////
+	private SztucznaInteligencja AI1 = null;
 	
 	/** Referencja na widok. */
 	private final View view;

@@ -1,23 +1,26 @@
 package sztucznaInteligencja;
-
 import model.Plansza;
 import model.Przynaleznosc;
 
+
+
 public class HeurystykaMaxWplywuNaSwojePola extends Heurystyka {
 
-	public HeurystykaMaxWplywuNaSwojePola(Przynaleznosc AI) {
-		super(AI);
-		// TODO Auto-generated constructor stub
-	}
-
-	protected int obliczanieWartosci(Plansza makietaRuchu, int kolumna)
+	
+	protected int obliczanieWartosci(Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
-		Ciagi mojeCiagi = makietaRuchu.sasiednieCiagi(AI, kolumna);
+		Przynaleznosc gracz = null;
+		if(ktoryGracz == 0)
+			gracz = Przynaleznosc.GRACZ1;
+		else if(ktoryGracz == 1)
+			gracz = Przynaleznosc.GRACZ2;
+		Ciagi mojCiag = makietaRuchu.sasiednieCiagi(gracz, kolumna);
+		
 		//if sprawdzaj¹cy czy mo¿na utworzyæ czwórkê
-		if((mojeCiagi.getLewoSkosDol()+mojeCiagi.getLewoSkosGora()+1)>=4||(mojeCiagi.getPrawoSkosDol()+mojeCiagi.getPrawoSkosGora()+1)>=4||(mojeCiagi.getPion()+1)>=4||(mojeCiagi.getPoziomLewo()+mojeCiagi.getPoziomPrawo()+1)>=4)
+		if((mojCiag.getLewoSkosDol()+mojCiag.getLewoSkosGora()+1)>=4||(mojCiag.getPrawoSkosDol()+mojCiag.getPrawoSkosGora()+1)>=4||(mojCiag.getPion()+1)>=4||(mojCiag.getPoziomLewo()+mojCiag.getPoziomPrawo()+1)>=4)
 			return 100;
 		else
-			return algorytmMaxWplywuNaSwojePola(mojeCiagi);
+			return algorytmMaxWplywuNaSwojePola(mojCiag);
 	}
 	
 	private int algorytmMaxWplywuNaSwojePola(Ciagi mojCiag)

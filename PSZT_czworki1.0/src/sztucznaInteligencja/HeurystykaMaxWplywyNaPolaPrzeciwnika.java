@@ -1,9 +1,13 @@
 package sztucznaInteligencja;
-
 import model.Plansza;
 import model.Przynaleznosc;
 
-public class HeurystykaMaxWplywyNaWszytkiePola extends Heurystyka {
+
+
+
+public class HeurystykaMaxWplywyNaPolaPrzeciwnika extends Heurystyka {
+
+	
 
 	protected int obliczanieWartosci(Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
@@ -20,6 +24,7 @@ public class HeurystykaMaxWplywyNaWszytkiePola extends Heurystyka {
 		}
 		Ciagi mojCiag = makietaRuchu.sasiednieCiagi(gracz, kolumna);
 		Ciagi ciagPrzeciwnika = makietaRuchu.sasiednieCiagi(przeciwnik, kolumna);
+		//show(ciagPrzeciwnika);
 		//if sprawdzaj¹cy czy mo¿na utworzyæ czwórkê
 		if((mojCiag.getLewoSkosDol()+mojCiag.getLewoSkosGora()+1)>=4||(mojCiag.getPrawoSkosDol()+mojCiag.getPrawoSkosGora()+1)>=4||(mojCiag.getPion()+1)>=4||(mojCiag.getPoziomLewo()+mojCiag.getPoziomPrawo()+1)>=4)
 			return 100;

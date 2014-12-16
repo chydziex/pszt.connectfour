@@ -31,11 +31,6 @@ public class Model{// extends Throwable {
 	 */
 	private Plansza plansza;
 	
-	/**
-	 * obiekt umo¿liaj¹cy korzystanie z klasy SztucznaInteligencja
-	 */
-	private SztucznaInteligencja AI;
-	
 	
 	/**
 	 * geter zmiennej plansza, s³u¿y do testów
@@ -63,6 +58,14 @@ public class Model{// extends Throwable {
 		stworzGraczy(tryb);
 		return gracz.czyjRuch();
 	}
+ 	
+ 	public RodzajeGraczy nowaGra(Tryby tryb,int ktoreAI)
+	{
+		
+		stworzPlansze(iloscWierszy, iloscKolumn);
+		stworzGraczy(tryb,ktoreAI);
+		return gracz.czyjRuch();
+	}
 	
 	/**
 	 * Funkcja wywo³uje funkcjê analizaRzutu, funkcja przeznaczona dla gracza
@@ -75,16 +78,6 @@ public class Model{// extends Throwable {
 		return analizaRzutu(kolumna);
 	}
 	
-	/**
-	 * Funkcja wywo³uje funkcjê analizaRzutu, funkcja przeznaczona dla AI
-	 * @param kolumna - do któej kolumny wrzucono ¿eton
-	 * @return wspó³rzêdne w planszy ostatniego ¿etonu
-	 * @throws Wyjatek - czy wrzucenie ¿etonu spowodowa³o remis, wygran¹ lub b³¹d
-	 */
-	public Wspolrzedne wrzucZeton()throws WyjatekRemis, WyjatekRuchNiedozwolony, WyjatekWygrana
-	{
-		return analizaRzutu(AI.obliczanieRuchu());
-	}
 	
 	/**
 	 * Funkcja zwraca informacjê czy teraz gra cz³owiek czy komputer
@@ -123,14 +116,6 @@ public class Model{// extends Throwable {
 		return gracz.getTrybGry();
 	}
 	
-	
-	/**
-	 * Konstruktor klasy model, tworz¹cy obiekt AI
-	 */
- 	public Model()
- 	{
- 		AI=new SztucznaInteligencja();
- 	}
  	
 	/**
 	 * Funkcja tworz¹ca plansze zale¿nie od informacji w argumencie
@@ -150,7 +135,13 @@ public class Model{// extends Throwable {
 	private void stworzGraczy(Tryby tryb)
 	{	
 		gracz= new Gracz(tryb);
-		gracz.losujGracza();
+		return;
+	}	
+	
+	private void stworzGraczy(Tryby tryb,int ktoreAI)
+	{	
+		gracz= new Gracz(tryb);
+		gracz.ustawAI(ktoreAI);
 		return;
 	}	
 	

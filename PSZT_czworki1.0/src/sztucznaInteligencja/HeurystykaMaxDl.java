@@ -1,21 +1,23 @@
 package sztucznaInteligencja;
-
 import model.Plansza;
 import model.Przynaleznosc;
+
+
+
 
 
 public class HeurystykaMaxDl extends Heurystyka {
 
 	
 	
-	public HeurystykaMaxDl(Przynaleznosc AI) {
-		super(AI);
-		// TODO Auto-generated constructor stub
-	}
-
-	protected int obliczanieWartosci(Plansza makietaRuchu, int kolumna)
+	protected int obliczanieWartosci(Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
-		Ciagi mojCiag = makietaRuchu.sasiednieCiagi(AI, kolumna);
+		Przynaleznosc gracz = null;
+		if(ktoryGracz == 0)
+			gracz = Przynaleznosc.GRACZ1;
+		else if(ktoryGracz == 1)
+			gracz = Przynaleznosc.GRACZ2;
+		Ciagi mojCiag = makietaRuchu.sasiednieCiagi(gracz, kolumna);
 		
 		//if sprawdzaj¹cy czy mo¿na utworzyæ czwórkê:
 		

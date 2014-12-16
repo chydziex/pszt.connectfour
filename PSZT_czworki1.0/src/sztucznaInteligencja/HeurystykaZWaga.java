@@ -1,6 +1,8 @@
 package sztucznaInteligencja;
-
 import model.Plansza;
+
+
+
 
 public class HeurystykaZWaga
 {
@@ -13,8 +15,8 @@ public class HeurystykaZWaga
 	private final Heurystyka heurystyka;
 	private int waga;
 	
-	int getWartosc(Plansza makietaRuchu, int kolumna)
+	public int getWartosc(Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
-		return heurystyka.getWartosc(makietaRuchu, kolumna);
+		return heurystyka.getWartosc(makietaRuchu, kolumna, ktoryGracz);
 	}
 }

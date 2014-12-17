@@ -1,8 +1,12 @@
 package controller;
+import java.io.FileNotFoundException;
 import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import pliki.DaneAi;
+import pliki.PlikKonfiguracyjnyAiAi;
+import pliki.PlikKonfiguracyjnyAiCzlowiek;
 import view.View;
 import wiadomosc.Wiadomosc;
 import wiadomosc.WiadomoscRuch;
@@ -133,6 +137,14 @@ public class Controller implements Runnable
 							try
 							{
 								System.out.println("Dobrze");
+								
+								if(pracaKrokowa)
+								{
+									System.out.println("Czekam na klawisz...");
+									odbierzWiadomosc();
+								}
+													
+								
 								if(ktoryGracz == AI.getKtoryJestAI())
 									wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
 								else
@@ -204,10 +216,89 @@ public class Controller implements Runnable
 	}
 	
 	/** Funkcja wczytujaca informacje o konfiguracji dzialania programu jesli jest komputer. */
-	private void wczytajUstawienia()
+	private void wczytajUstawienia() 
 	{
+		DaneAi dane[] = null;
+		Integer [] wagi = null;
+	    Integer [] wagi1 =null;
+		
 		//TODO
-	}
+		if(czyWgrze1Komputer())
+		{	
+			PlikKonfiguracyjnyAiCzlowiek plik = new PlikKonfiguracyjnyAiCzlowiek("konfiguracjaAiCzlowiek.txt");
+			if(!plik.czyIstnieje())
+			{
+				System.out.println("Brak pliku konfiguracji Ai vs Czlowiek!");
+				return;
+			}
+			try {
+				plik.otworz();
+				dane = plik.czytajDaneAi();
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return;
+			}
+			 catch (WyjatekZlyPlikKonfiguracyjny e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return;
+			}
+		    wagi = dane[0].getWagiHeurystyk();
+				
+		}
+		else if(czyWgrze2Komputery())
+		{
+			PlikKonfiguracyjnyAiAi plik = new PlikKonfiguracyjnyAiAi("konfiguracjaAiAi.txt");
+			if(!plik.czyIstnieje())
+			{
+				System.out.println("Brak pliku konfiguracji Ai vs Ai!");
+				return;
+			}
+			try {
+				plik.otworz();
+				dane = plik.czytajDaneAi();
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return;
+			}
+			 catch (WyjatekZlyPlikKonfiguracyjny e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return;
+			}
+			wagi = dane[0].getWagiHeurystyk();
+			wagi1 = dane[1].getWagiHeurystyk();
+			
+			Vector<HeurystykaZWaga> vectorHeurystyk1 = new Vector<HeurystykaZWaga>();
+			
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxDl(), wagi1[0]));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), wagi1[1]));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), wagi1[2]));
+			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), wagi1[3]));
+			
+			AI1 = new SztucznaInteligencja(vectorHeurystyk1, (dane[0].getKolejnosc()+1)%2, dane[1].getGlebokoscDrzewa());
+			
+		}
+		
+		//tworzymy wektory heurystyk wraz z wagami dla AI - zawsze jest conajmniej 1 AI, gdy uruchamiamy ta funkcje
+		Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
+		
+		vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), wagi[0]));
+		vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), wagi[1]));
+		vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), wagi[2]));
+		vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), wagi[3]));
+	
+		AI = new SztucznaInteligencja(vectorHeurystyk, dane[0].getKolejnosc(), dane[0].getGlebokoscDrzewa());
+		
+		//System.out.println(dane[0].toString());
+		//System.out.println(dane[1].toString());
+		
+		
+}
 	
 	/** Funkcja inicjalizujaca model: wysyla mu tryb gry i potrzebne informacje. */
 	private void inicjalizujModel()
@@ -221,10 +312,14 @@ public class Controller implements Runnable
 	private void nowaGra() throws InterruptedException
 	{
 		//TO MODIFY
-		int ktoryKomputer = 0;
-		int glebokoscDrzewa = 10;
+		//int ktoryKomputer = 0;
+		//int glebokoscDrzewa = 10;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
+		
+		wczytajUstawienia();
+		
+		/*
 		if(czyWGrzeKomputer())
 		{	
 			//stworzyc wektor heurystyk z wagami i przekazac
@@ -244,7 +339,7 @@ public class Controller implements Runnable
 			AI = new SztucznaInteligencja(vectorHeurystyk, ktoryKomputer, glebokoscDrzewa);
 			AI1 = new SztucznaInteligencja(vectorHeurystyk1, (ktoryKomputer + 1)%2, glebokoscDrzewa);
 		}
-		
+		*/
 		inicjalizujModel();
 		
 		view.wyswietlPanelZGra();
@@ -314,6 +409,26 @@ public class Controller implements Runnable
 			return false;
 	}
 	
+	/** Sprawdza, czy w grze uczestnicza dwa CPU */
+	private boolean czyWgrze2Komputery()
+	{
+		if(wiadomosc.jakiTryb() == Tryby.AIvsAI)
+			return true;
+		else
+			return false;
+		
+	}
+	
+	/** Sprawdza, czy w grze uczestniczy 1 CPU */
+	private boolean czyWgrze1Komputer()
+	{
+		if(wiadomosc.jakiTryb() == Tryby.AIvsCZLOWIEK)
+			return true;
+		else
+			return false;
+		
+	}
+	
 	private void wyczyscKolejke()
 	{
 		kolejkaZadan.clear();
@@ -336,4 +451,6 @@ public class Controller implements Runnable
 	
 	/** Sk³adowa przechowuj¹ca referencje na wiadomoœci przekazywane przez BlockingQueue od View. */
 	private Wiadomosc wiadomosc = null;
+	
+	private boolean pracaKrokowa = false;
 }

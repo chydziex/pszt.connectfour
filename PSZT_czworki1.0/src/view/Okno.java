@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
@@ -125,6 +126,12 @@ class Okno extends JFrame {
 		
 		panelInterfejsuGracza.dodajListeneraRuchuGracza(l);
 	}
+	
+	public void dodajKlawiaturaListener(KeyAdapter l) {
+			
+		setFocusable(true);
+		addKeyListener(l);
+	}
 
 	public void wyswietlInterfejsGracza(int ktoryGracz)
 	{
@@ -169,4 +176,5 @@ class Okno extends JFrame {
 
 	private WyborTrybuGry panelWyboruTrybu = new WyborTrybuGry();
 	private WyborAlgorytmuAi panelWyborAlgorytmuAi = new WyborAlgorytmuAi();
+		
 }

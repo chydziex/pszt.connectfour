@@ -34,16 +34,16 @@ public class PlikKonfiguracyjnyAiCzlowiek extends Plik {
 	protected DaneAi parsujLinie(String linia) throws WyjatekZlyPlikKonfiguracyjny{
 		
 		Scanner scn = new Scanner(linia);
-		int glebokoscDrzewa, czasOczekiwaniaNaRuch;
+		int glebokoscDrzewa, kolejnosc;
 		LinkedList <Integer> wagiHeurystyk = new LinkedList<Integer>();
 
 		if (scn.hasNextInt())
-			glebokoscDrzewa = scn.nextInt();
+			kolejnosc = scn.nextInt();
 		else
 			throw new WyjatekZlyPlikKonfiguracyjny();
-
+		
 		if (scn.hasNextInt())
-			czasOczekiwaniaNaRuch = scn.nextInt();
+			glebokoscDrzewa = scn.nextInt();
 		else
 			throw new WyjatekZlyPlikKonfiguracyjny();
 
@@ -52,7 +52,7 @@ public class PlikKonfiguracyjnyAiCzlowiek extends Plik {
 
 		}
 		
-		return new DaneAi( wagiHeurystyk.toArray(new Integer [0]), glebokoscDrzewa, czasOczekiwaniaNaRuch );
+		return new DaneAi( wagiHeurystyk.toArray(new Integer [0]), glebokoscDrzewa, kolejnosc );
 		
 	}
 

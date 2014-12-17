@@ -28,6 +28,11 @@ public abstract class Wiadomosc
 		return ruchMyszki;
 	}
 	
+	public boolean czyKlawisz()
+	{
+		
+		return klawisz;
+	}
 
 	
 	/** Czy to wiadomoœæ informuj¹ca o wyborze kolumny przez cz³owieka.*/
@@ -38,4 +43,6 @@ public abstract class Wiadomosc
 	protected boolean nowaGra = false;
 	
 	protected boolean ruchMyszki = false;
+	
+	protected boolean klawisz = false;
 }

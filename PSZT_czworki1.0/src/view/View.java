@@ -1,6 +1,8 @@
 package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -9,6 +11,7 @@ import java.util.concurrent.BlockingQueue;
 import javax.swing.JPanel;
 
 import wiadomosc.Wiadomosc;
+import wiadomosc.WiadomoscKlawisz;
 import wiadomosc.WiadomoscRuch;
 import wiadomosc.WiadomoscRuchMyszki;
 import wiadomosc.WiadomoscTryb;
@@ -196,11 +199,29 @@ public class View
 			{}
 		};
 			
+		klawiszKrokulistener = new KeyAdapter() 
+		{
+			
+			@Override
+			public void keyPressed(KeyEvent e){
+				
+				if(e.getKeyChar() == ' ')
+				{
+					kolejkaZdarzen.offer(new WiadomoscKlawisz());
+					System.out.println("SPACJA");
+				
+				
+				}
+			}
+			
+			
+		};
 		okno.dodajWyborTrybuListener(wybranoTrybGryListener);
 		okno.dodajWyborAlgorytmuAiListener(wybranoAlgorytmAiListener);
 		okno.dodajPozycjaZetonuIStrzalkiInterfejsListener(ruchMyszkiListener);
 		okno.dodajRuchGraczaListener(klikMyszkiListener);
 		
+		okno.dodajKlawiaturaListener(klawiszKrokulistener);
 	}
 	
 	private Okno okno;
@@ -210,4 +231,5 @@ public class View
 	private ActionListener wybranoAlgorytmAiListener;
 	private MouseMotionListener ruchMyszkiListener;
 	private MouseListener klikMyszkiListener;
+	private KeyAdapter klawiszKrokulistener;
 }

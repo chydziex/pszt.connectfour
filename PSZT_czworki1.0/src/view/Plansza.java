@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyAdapter;
 import java.io.File;
 
 import javax.swing.JLabel;
@@ -69,4 +70,6 @@ class Plansza extends JPanel
 	{
 		return new JLabel(Obrazki.obrazkiZetonow[ktoryGracz]);
 	}
+	
+
 }

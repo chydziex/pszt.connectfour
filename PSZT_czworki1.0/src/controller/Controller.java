@@ -130,10 +130,15 @@ public class Controller implements Runnable
 							try
 							{
 								if(ktoryGracz == AI.getKtoryJestAI())
+								{
 									wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
+									AI.pisz();
+								}
 								else
+								{
 									wspolrzedne = model.wrzucZeton(AI1.wybierzKolumne(model.getPlansza()));
-								AI.pisz();
+									AI1.pisz();
+								}
 								System.out.println("----- KONIEC RUCHU AI -----");
 								System.out.println("------------------------------");
 							} catch(WyjatekRuchNiedozwolony e)
@@ -218,8 +223,8 @@ public class Controller implements Runnable
 	private void nowaGra() throws InterruptedException
 	{
 		//TO MODIFY
-		int ktoryKomputer = 1;
-		int glebokoscDrzewa = 10;
+		int ktoryKomputer = 0;
+		int glebokoscDrzewa = 5;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
 		if(czyWGrzeKomputer())

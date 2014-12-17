@@ -11,16 +11,13 @@ import view.View;
 import wiadomosc.Wiadomosc;
 import wiadomosc.WiadomoscRuch;
 import model.Model;
-import model.Plansza;
 import model.Przynaleznosc;
 import model.RodzajeGraczy;
 import sytuacjeWyjatkowe.*;
-import sztucznaInteligencja.Heurystyka;
 import sztucznaInteligencja.HeurystykaMaxDl;
 import sztucznaInteligencja.HeurystykaMaxIloscCiagow;
 import sztucznaInteligencja.HeurystykaMaxWplywuNaSwojePola;
 import sztucznaInteligencja.HeurystykaMaxWplywyNaPolaPrzeciwnika;
-import sztucznaInteligencja.HeurystykaMaxWplywyNaWszytkiePola;
 import sztucznaInteligencja.HeurystykaZWaga;
 import sztucznaInteligencja.SztucznaInteligencja;
 import model.Tryby;
@@ -136,6 +133,7 @@ public class Controller implements Runnable
 						{
 							try
 							{
+
 								System.out.println("Dobrze");
 								
 								if(pracaKrokowa)
@@ -144,12 +142,19 @@ public class Controller implements Runnable
 									odbierzWiadomosc();
 								}
 													
-								
+						
+
 								if(ktoryGracz == AI.getKtoryJestAI())
+								{
 									wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
+									AI.pisz();
+								}
 								else
+								{
 									wspolrzedne = model.wrzucZeton(AI1.wybierzKolumne(model.getPlansza()));
-								System.out.println("----- KONIEC RUCHU KOMPA -----");
+									AI1.pisz();
+								}
+								System.out.println("----- KONIEC RUCHU AI -----");
 								System.out.println("------------------------------");
 							} catch(WyjatekRuchNiedozwolony e)
 							{
@@ -312,8 +317,12 @@ public class Controller implements Runnable
 	private void nowaGra() throws InterruptedException
 	{
 		//TO MODIFY
+
 		//int ktoryKomputer = 0;
 		//int glebokoscDrzewa = 10;
+
+		int ktoryKomputer = 0;
+		int glebokoscDrzewa = 5;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
 		
@@ -326,10 +335,10 @@ public class Controller implements Runnable
 			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
 			Vector<HeurystykaZWaga> vectorHeurystyk1 = new Vector<HeurystykaZWaga>();
 			
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 3));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 2));
 			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 1));
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), 3));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 3));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), 1));
 			
 			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 1));
 			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
@@ -452,5 +461,5 @@ public class Controller implements Runnable
 	/** Sk³adowa przechowuj¹ca referencje na wiadomoœci przekazywane przez BlockingQueue od View. */
 	private Wiadomosc wiadomosc = null;
 	
-	private boolean pracaKrokowa = false;
+	private boolean pracaKrokowa = true;
 }

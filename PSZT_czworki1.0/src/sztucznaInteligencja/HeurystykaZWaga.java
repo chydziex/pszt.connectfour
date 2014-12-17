@@ -17,6 +17,6 @@ public class HeurystykaZWaga
 	
 	public int getWartosc(Plansza makietaRuchu, int kolumna, int ktoryGracz)
 	{
-		return heurystyka.getWartosc(makietaRuchu, kolumna, ktoryGracz);
+		return waga*heurystyka.getWartosc(makietaRuchu, kolumna, ktoryGracz);
 	}
 }

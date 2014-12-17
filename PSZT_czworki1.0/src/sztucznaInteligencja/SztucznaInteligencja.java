@@ -1,12 +1,9 @@
 package sztucznaInteligencja;
 
-import java.util.Random;
 import java.util.Vector;
 
 import model.Model;
 import model.Plansza;
-import model.Przynaleznosc;
-import model.Wspolrzedne;
 
 //TODO
 public class SztucznaInteligencja
@@ -28,7 +25,6 @@ public class SztucznaInteligencja
 		//TODO
 		
 		drzewoGry = new DrzewoGry(plansza);
-		System.out.println("WYBIERAM KOLUMNE " + drzewoGry.ktoraKolumnaRuch());
 		return drzewoGry.ktoraKolumnaRuch();
 		
 		
@@ -68,6 +64,17 @@ public class SztucznaInteligencja
 		*/
 	}
 	
+	/** Metoda wypisujaca interesujace komunikaty o drzewie, czyli */
+	public void pisz()
+	{
+		// TODO
+		drzewoGry.wypiszOcenaRoot();
+		drzewoGry.wypiszGlebokoscDrzewaOsiagnieta();
+		drzewoGry.wypiszIloscWezlowWDrzewie();
+		drzewoGry.wypiszWartosciWezlow();
+		System.out.println("WYBIERAM KOLUMNE " + drzewoGry.ktoraKolumnaRuch());
+	}
+	
 	public double ocenWezel(final Plansza plansza, int doKtorejKolumnyChcemyWrzucic, int ktoryGracz)
 	{
 		double ocena = 0;
@@ -82,6 +89,7 @@ public class SztucznaInteligencja
 	 *  glebokosc: ile ruchow do przodu analizujemy. 1 - rozpatrujemy stan gry po naszym pierwszym ruchu.
 	 *  plansza: "wirtualna" plansza po wrzuceniu do niej zetonu reprezentujacego nasz hipotetyczny ruch, ktory analizujemy.
 	 */
+	/*
 	private double alfaBeta(final Plansza plansza, int doKtorejKolumnyChcemyWrzucic, int glebokosc, double alfa, double beta)
 	{
 		// TODO
@@ -169,14 +177,14 @@ public class SztucznaInteligencja
 			return alfa;
 		}
 	}
-	
+	*/
 	/** Skladowa informujaca, ktorym w kolejnosci graczem jest AI. Jesli w grze AI nie ma, parametr ma wartosc -1. */
 	// nadanie wartosci w f-cji odbierajacej ustawienia od pakietu obslugi plikow
 	private final int ktoryJestAI;
 	private final int glebokoscDrzewa;
 	private final Vector<HeurystykaZWaga> mojeHeurystyki;
 	private final int[] indeksyKolumn = {3, 4, 2, 5, 1, 6, 0};
-	private Random rand = new Random();
+	private final int[] indeksyWezlow = {6, 4, 2, 0, 1, 3, 5};	
 	private DrzewoGry drzewoGry;
 	
 	class DrzewoGry
@@ -184,6 +192,8 @@ public class SztucznaInteligencja
 		/** korzen drzewa.*/
 		private Stan aktualnyStan;
 		private final Plansza oryginalnaPlansza;
+		private int glebokoscOsiagnieta = 0;
+		private int iloscWezlow = 0;
 				
 		/**
 		 * Konstruktor Drzewa gry. Do stworzenia drzewa wykorzystuje algorytm MinMax z przycinaniem alfa - beta.
@@ -198,10 +208,36 @@ public class SztucznaInteligencja
 			oryginalnaPlansza = orygPlansza;
 			aktualnyStan = new Stan(oryginalnaPlansza, 1, -1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 		}
-		
-		public void pisz()
+
+		public void wypiszOcenaRoot()
 		{
-			// TODO
+			System.out.println("Wartosc root: " + aktualnyStan.getOcena());
+		}
+		
+		public void wypiszWartosciWezlow()
+		{
+			for(int i = 0; i < Model.iloscKolumn; i++)
+			{
+				if(aktualnyStan.dzieci[indeksyWezlow[i]] != null)
+				{
+					if(aktualnyStan.dzieci[indeksyWezlow[i]].getCzyCiecie())
+						System.out.println("Kolumna " + i + " Wartosc: " + "?");
+					else
+						System.out.println("Kolumna " + i + " Wartosc: " + aktualnyStan.dzieci[indeksyWezlow[i]].getOcena());
+				}
+				else
+					System.out.println("Kolumna " + i + " Wartosc: ?");
+			}
+		}
+		
+		public void wypiszIloscWezlowWDrzewie()
+		{
+			System.out.println("Ilosc Wezlow w drzewie: " + getIloscWezlow());
+		}
+		
+		public void wypiszGlebokoscDrzewaOsiagnieta()
+		{
+			System.out.println("Glebokosc drzewa osiagnieta: " + glebokoscOsiagnieta);
 		}
 		
 		/** Metoda zwraca indeks kolumny, do ktorej AI chce wrzucic zeton.
@@ -211,15 +247,22 @@ public class SztucznaInteligencja
 		 */
 		public int ktoraKolumnaRuch()
 		{
-			System.out.println("Wartosc root: " + aktualnyStan.getOcena());
 			for(int i = 0; i < Model.iloscKolumn; i++)
 			{
-				if(aktualnyStan.dzieci[i] != null)
-					System.out.println("Dziecko " + i + " Wartosc: " + aktualnyStan.dzieci[i].getOcena());
 				if(aktualnyStan.dzieci[i] != null && (aktualnyStan.dzieci[i].getOcena() >= aktualnyStan.getOcena()))
 					return indeksyKolumn[i];
 			}
 			return -1;
+		}
+		
+		public int getGlebokoscOsiagnieta()
+		{
+			return glebokoscOsiagnieta;
+		}
+		
+		public int getIloscWezlow()
+		{
+			return iloscWezlow;
 		}
 		
 		class Stan
@@ -227,6 +270,7 @@ public class SztucznaInteligencja
 			private double ocena;
 			//private Plansza makieta;
 			private Stan[] dzieci = new Stan[7];
+			private boolean czyCiecie = false;
 			
 			public Stan(double o)
 			{
@@ -238,8 +282,12 @@ public class SztucznaInteligencja
 			 */
 			public Stan(final Plansza plansza, int glebokosc, int doKtorejKolumnyChcemyWrzucicZeton, double alfa, double beta)
 			{
+				//System.out.println("tu");
+				if(glebokosc > glebokoscOsiagnieta)
+					glebokoscOsiagnieta = glebokosc;
 				Plansza kopiaPlanszy = null;
-				
+				iloscWezlow++;
+				//System.out.println("tu " + iloscWezlow);
 				if(glebokosc == glebokoscDrzewa)
 				{
 					//System.out.print("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " ");
@@ -290,6 +338,7 @@ public class SztucznaInteligencja
 						if(alfa >= beta)
 						{
 							ocena = beta;
+							czyCiecie = true;
 							//System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena + " PO CIECIU");
 							return;
 						}
@@ -328,6 +377,7 @@ public class SztucznaInteligencja
 						if(alfa >= beta)
 						{
 							ocena = alfa;
+							czyCiecie = true;
 							//System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena + " PO CIECIU");
 							return;
 						}
@@ -335,6 +385,11 @@ public class SztucznaInteligencja
 					ocena = beta;
 					//System.out.println("Glebokosc: " + glebokosc + " Kolumna: " + doKtorejKolumnyChcemyWrzucicZeton + " Ocena: " + ocena);
 				}
+			}
+			
+			public boolean getCzyCiecie()
+			{
+				return czyCiecie;
 			}
 			
 			public double getOcena()
@@ -362,17 +417,6 @@ public class SztucznaInteligencja
 		
 		
 			//////////////////////////////////// PRIVATE///////////////////////////////	
-		
-			/**
-			 * Funkcja oceniaj¹ca dany ruch. Sumuje oceny ruchu/stanu gry przemnozone przez wagi.
-			 * @return wartoœæ danego ruchu
-			 */
-			private int wartoscRuchu(Plansza makietaRuchu, int kolumna)
-			{
-				//TODO
-				//return mojaHeurystyka.getWartosc(makietaRuchu, kolumna);
-				return 0;
-			}
 		
 		}
 	}

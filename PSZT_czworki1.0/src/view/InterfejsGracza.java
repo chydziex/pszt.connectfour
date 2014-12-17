@@ -1,22 +1,21 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 
 class InterfejsGracza extends JPanel
 {
 	// TODO
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public InterfejsGracza()
 	{
 		
@@ -106,14 +105,6 @@ class InterfejsGracza extends JPanel
 		pan.add(strzalka);
 		strzalka.setBounds(0, 0, Obrazki.obrazkiStrzalek[0].getIconWidth(), Obrazki.obrazkiStrzalek[0].getIconHeight());
 		add(pan);
-	}
-	
-	private void dodajMenu()
-	{
-		
-		
-		
-		
 	}
 	
 	/** Jeden label, w którym tylko zmieniamy ikonê ¿etonu w zale¿noœci od gracza.*/

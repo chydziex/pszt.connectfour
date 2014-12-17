@@ -8,8 +8,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.concurrent.BlockingQueue;
 
-import javax.swing.JPanel;
-
 import wiadomosc.Wiadomosc;
 import wiadomosc.WiadomoscKlawisz;
 import wiadomosc.WiadomoscRuch;

@@ -1,12 +1,9 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.io.File;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -14,6 +11,11 @@ import model.Wspolrzedne;
 
 class Plansza extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Plansza(int iloscWierszy, int iloscKolumn)
 	{
 		// TODO

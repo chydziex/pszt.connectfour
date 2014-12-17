@@ -21,6 +21,10 @@ import model.Tryby;
  */
 public class WyborTrybuGry extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	WyborTrybuGry() {
 
 		setLayout(new GridLayout(5, 3));
@@ -69,7 +73,7 @@ public class WyborTrybuGry extends JPanel {
 
 	private JLabel tytul = new JLabel("Wybierz tryb gry");
 	private String[] nazwyTrybow = { "Gracz vs Gracz", "Gracz vs Komputer",	"Komputer vs Komputer" };
-	private JList listaTrybow = new JList(nazwyTrybow);
+	private JList<String> listaTrybow = new JList<String>(nazwyTrybow);
 	private JButton przyciskOk = new JButton("Ok");
 
 }

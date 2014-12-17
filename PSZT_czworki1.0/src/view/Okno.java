@@ -1,20 +1,20 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import model.Tryby;
 import model.Wspolrzedne;
 
 class Okno extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public Okno(int iloscWierszy, int iloscKolumn) {
 		// TODO
 		super("Gra w czwórki");
@@ -98,13 +98,14 @@ class Okno extends JFrame {
 	 * 
 	 * @return Narazie int - w przyszlosci moze ENUM.
 	 */
+	/*
 	public int czytajAlgorytmAi() {
 
 		// TODO
 		return panelWyborAlgorytmuAi.czytajAlgorytm();
 
 	}
-
+*/
 	void dodajWyborTrybuListener(ActionListener l) {
 
 		panelWyboruTrybu.dodajListeneraPrzycisku(l);

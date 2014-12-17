@@ -1,16 +1,9 @@
 package view;
 
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-
-import model.Tryby;
 
 /**
  * Panel wyboru algorytmu Ai, wyswietlany w glownym oknie
@@ -21,12 +14,16 @@ import model.Tryby;
 public class WyborAlgorytmuAi extends JPanel {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * TODO Wybor algorytmu dla JEDNEGO AI albo dla OBYDWU AI - zaleznie od
 	 * wyboru trybu gry: gracz vs komputer ALBO komputer vs komputer. Aktualnie
 	 * wybor tylko dla 1 AI.
 	 * 
 	 */
-
+/*
 	public WyborAlgorytmuAi() {
 		// TODO Auto-generated constructor stub
 
@@ -42,7 +39,7 @@ public class WyborAlgorytmuAi extends JPanel {
 		add(przyciskOk);
 
 	}
-
+*/
 	/**
 	 * Zamiast miliona ifow, mozna uzyc mapy - do rozwazenia.
 	 * 
@@ -51,6 +48,7 @@ public class WyborAlgorytmuAi extends JPanel {
 	 *         NIE).
 	 * 
 	 */
+	/*
 	int czytajAlgorytm() {
 
 		// TODO Auto-generated method stub
@@ -58,7 +56,7 @@ public class WyborAlgorytmuAi extends JPanel {
 		return listaAlgorytmow.getSelectedIndex();
 
 	}
-
+*/
 	void wylacz() {
 
 		setVisible(false);
@@ -69,9 +67,9 @@ public class WyborAlgorytmuAi extends JPanel {
 		przyciskOk.addActionListener(l);
 	}
 
-	private JLabel tytul = new JLabel("Wybierz algorytm dla komputera");
-	private String[] algorytmyAi = { "jakis", "inny", "kolejny" };
-	private JList listaAlgorytmow = new JList(algorytmyAi);
+	//private JLabel tytul = new JLabel("Wybierz algorytm dla komputera");
+	//private String[] algorytmyAi = { "jakis", "inny", "kolejny" };
+	//private JList listaAlgorytmow = new JList(algorytmyAi);
 	private JButton przyciskOk = new JButton("OK");
 
 }

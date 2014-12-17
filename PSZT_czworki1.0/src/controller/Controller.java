@@ -7,16 +7,12 @@ import view.View;
 import wiadomosc.Wiadomosc;
 import wiadomosc.WiadomoscRuch;
 import model.Model;
-import model.Plansza;
-import model.Przynaleznosc;
 import model.RodzajeGraczy;
 import sytuacjeWyjatkowe.*;
-import sztucznaInteligencja.Heurystyka;
 import sztucznaInteligencja.HeurystykaMaxDl;
 import sztucznaInteligencja.HeurystykaMaxIloscCiagow;
 import sztucznaInteligencja.HeurystykaMaxWplywuNaSwojePola;
 import sztucznaInteligencja.HeurystykaMaxWplywyNaPolaPrzeciwnika;
-import sztucznaInteligencja.HeurystykaMaxWplywyNaWszytkiePola;
 import sztucznaInteligencja.HeurystykaZWaga;
 import sztucznaInteligencja.SztucznaInteligencja;
 import model.Tryby;
@@ -33,7 +29,8 @@ public class Controller implements Runnable
 {
 	public Controller()
 	{
-		view = new View(model.iloscWierszy, model.iloscKolumn, kolejkaZadan);
+		view = new View(Model.iloscWierszy, Model.iloscKolumn, kolejkaZadan);
+		wczytajUstawienia();
 		//wczytaj Ustawienia Gry Z Pakietu Obslugi Plikow
 		//wczytajUstawienia();
 		
@@ -121,23 +118,23 @@ public class Controller implements Runnable
 		{
 				try
 				{
-					NEW_GAME: for(;;)
+					for(;;)
 					{
 						if(kolejkaZadan.size() > 0)
 							sprzatnijKolejke();				
 						ktoryGracz = model.ktoryGracz();
 						
-						System.out.println(model.czyjRuch());
+						//System.out.println(model.czyjRuch());
 						if(model.czyjRuch() == RodzajeGraczy.KOMPUTER)
 						{
 							try
 							{
-								System.out.println("Dobrze");
 								if(ktoryGracz == AI.getKtoryJestAI())
 									wspolrzedne = model.wrzucZeton(AI.wybierzKolumne(model.getPlansza()));
 								else
 									wspolrzedne = model.wrzucZeton(AI1.wybierzKolumne(model.getPlansza()));
-								System.out.println("----- KONIEC RUCHU KOMPA -----");
+								AI.pisz();
+								System.out.println("----- KONIEC RUCHU AI -----");
 								System.out.println("------------------------------");
 							} catch(WyjatekRuchNiedozwolony e)
 							{
@@ -191,7 +188,7 @@ public class Controller implements Runnable
 				}
 				catch(WyjatekWygrana e)
 				{
-					//wygrana();
+					wygrana();
 					view.aktualizacja(wspolrzedne, ktoryGracz);
 					System.out.println("Wygrana!");
 				}
@@ -221,7 +218,7 @@ public class Controller implements Runnable
 	private void nowaGra() throws InterruptedException
 	{
 		//TO MODIFY
-		int ktoryKomputer = 0;
+		int ktoryKomputer = 1;
 		int glebokoscDrzewa = 10;
 		view.wyswietlPanelWyboruGraczy();
 		odbierzWiadomosc();
@@ -231,10 +228,10 @@ public class Controller implements Runnable
 			Vector<HeurystykaZWaga> vectorHeurystyk = new Vector<HeurystykaZWaga>();
 			Vector<HeurystykaZWaga> vectorHeurystyk1 = new Vector<HeurystykaZWaga>();
 			
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 3));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 2));
 			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 1));
-			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), 3));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywuNaSwojePola(), 3));
+			vectorHeurystyk.add(new HeurystykaZWaga(new HeurystykaMaxWplywyNaPolaPrzeciwnika(), 1));
 			
 			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxDl(), 1));
 			vectorHeurystyk1.add(new HeurystykaZWaga(new HeurystykaMaxIloscCiagow(), 1));
@@ -250,7 +247,7 @@ public class Controller implements Runnable
 		view.wyswietlPanelZGra();
 		view.wylaczPanelWyboruGraczy();
 	}
-	
+	/*
 	private Przynaleznosc wyznaczPrzynaleznosc(int ktoryGracz)
 	{
 		if(ktoryGracz == 0)
@@ -259,7 +256,7 @@ public class Controller implements Runnable
 			return Przynaleznosc.GRACZ2;
 		return null;
 	}
-	
+	*/
 	/** Metoda obs³uguj¹ca sytuacjê koñca gry - remis.*/
 	private void remis()
 	{
